@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Routes, Route, NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
@@ -6,6 +7,8 @@ import {
   FolderOpen,
   BarChart3,
   Briefcase,
+  Menu,
+  X,
 } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import Grants from './pages/Grants';
@@ -14,85 +17,73 @@ import DataRoom from './pages/DataRoom';
 import InvestorCRM from './pages/InvestorCRM';
 
 function App() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const navItems = [
+    { to: '/', icon: LayoutDashboard, label: 'Dashboard' },
+    { to: '/grants', icon: Search, label: 'Grants & Accelerators' },
+    { to: '/network', icon: Users, label: 'Warm Intro Network' },
+    { to: '/data-room', icon: FolderOpen, label: 'Investor Data Room' },
+    { to: '/investors', icon: Briefcase, label: 'Investor CRM' },
+  ];
+
   return (
     <div className="flex h-screen bg-gray-50">
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col">
+      <aside
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-200 ease-in-out ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+        }`}
+      >
         <div className="p-6 border-b border-gray-200">
-          <h1 className="text-xl font-bold text-primary-700 flex items-center gap-2">
-            <BarChart3 className="w-6 h-6" />
-            MoneyBot Funding
-          </h1>
-          <p className="text-xs text-gray-500 mt-1">Accelerator Platform</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">
+                <BarChart3 className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold text-gray-900">MoneyBot</h1>
+                <p className="text-xs text-gray-500">Funding Accelerator</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden p-2 text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
         </div>
+
         <nav className="flex-1 p-4 space-y-1">
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-primary-50 text-primary-700'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`
-            }
-          >
-            <LayoutDashboard className="w-5 h-5" />
-            Dashboard
-          </NavLink>
-          <NavLink
-            to="/grants"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-primary-50 text-primary-700'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`
-            }
-          >
-            <Search className="w-5 h-5" />
-            Grants & Accelerators
-          </NavLink>
-          <NavLink
-            to="/network"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-primary-50 text-primary-700'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`
-            }
-          >
-            <Users className="w-5 h-5" />
-            Warm Intro Network
-          </NavLink>
-          <NavLink
-            to="/data-room"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-primary-50 text-primary-700'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`
-            }
-          >
-            <FolderOpen className="w-5 h-5" />
-            Investor Data Room
-          </NavLink>
-          <NavLink
-            to="/investors"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
-                isActive
-                  ? 'bg-primary-50 text-primary-700'
-                  : 'text-gray-600 hover:bg-gray-50'
-              }`
-            }
-          >
-            <Briefcase className="w-5 h-5" />
-            Investor CRM
-          </NavLink>
+          {navItems.map((item) => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              end={item.to === '/'}
+              onClick={() => setSidebarOpen(false)}
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                  isActive
+                    ? 'bg-primary-50 text-primary-700'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`
+              }
+            >
+              <item.icon className="w-5 h-5" />
+              {item.label}
+            </NavLink>
+          ))}
         </nav>
+
         <div className="p-4 border-t border-gray-200">
           <div className="text-xs text-gray-400">
             MoneyBot Funding Accelerator v1.0
@@ -101,7 +92,23 @@ function App() {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto">
+      <main className="flex-1 overflow-auto min-w-0">
+        {/* Mobile header */}
+        <div className="lg:hidden flex items-center gap-4 p-4 bg-white border-b border-gray-200">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-primary-600 rounded-lg flex items-center justify-center">
+              <BarChart3 className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-semibold text-gray-900">MoneyBot</span>
+          </div>
+        </div>
+
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/grants" element={<Grants />} />
