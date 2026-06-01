@@ -5,11 +5,13 @@ import {
   Users,
   FolderOpen,
   BarChart3,
+  Briefcase,
 } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import Grants from './pages/Grants';
 import Network from './pages/Network';
 import DataRoom from './pages/DataRoom';
+import InvestorCRM from './pages/InvestorCRM';
 
 function App() {
   return (
@@ -77,6 +79,19 @@ function App() {
             <FolderOpen className="w-5 h-5" />
             Investor Data Room
           </NavLink>
+          <NavLink
+            to="/investors"
+            className={({ isActive }) =>
+              `flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
+                isActive
+                  ? 'bg-primary-50 text-primary-700'
+                  : 'text-gray-600 hover:bg-gray-50'
+              }`
+            }
+          >
+            <Briefcase className="w-5 h-5" />
+            Investor CRM
+          </NavLink>
         </nav>
         <div className="p-4 border-t border-gray-200">
           <div className="text-xs text-gray-400">
@@ -92,6 +107,7 @@ function App() {
           <Route path="/grants" element={<Grants />} />
           <Route path="/network" element={<Network />} />
           <Route path="/data-room" element={<DataRoom />} />
+          <Route path="/investors" element={<InvestorCRM />} />
         </Routes>
       </main>
     </div>
