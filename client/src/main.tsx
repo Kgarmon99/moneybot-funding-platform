@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-const BASENAME = '/moneybot-funding-platform';
+const BASENAME = '/';
 import App from './App';
 import './index.css';
 
