@@ -4,325 +4,736 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MoneyBot — Investor Data Room</title>
+  <meta name="description" content="MoneyBot investor data room. Pre-Seed $500K raise. AI-powered financial literacy for kids aged 8-16." />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
           colors: {
-            money: {
-              50: '#f0fdf4',
-              100: '#dcfce7',
-              400: '#4ade80',
-              500: '#22c55e',
-              600: '#16a34a',
-              900: '#14532d',
-            },
-            ink: {
-              900: '#0a0a0a',
-              800: '#111111',
-              700: '#1a1a1a',
-              600: '#262626',
+            mb: {
+              green: '#00E676',
+              'green-soft': '#69F0AE',
+              'green-dark': '#00C853',
+              ink: '#0a0a1a',
+              'ink-2': '#11112a',
+              panel: 'rgba(17, 17, 42, 0.72)',
+              line: 'rgba(105, 240, 174, 0.18)',
+              white: '#F8FAFC',
+              muted: '#AAB8C8',
+              gold: '#FBBF24',
+              blue: '#00B0FF',
+              red: '#FF3D00',
             }
+          },
+          boxShadow: {
+            'neon': '0 0 40px rgba(0, 230, 118, 0.18)',
+            'neon-sm': '0 0 20px rgba(0, 230, 118, 0.12)',
+            'card': '0 24px 80px rgba(0, 0, 0, 0.34)',
           }
         }
       }
     }
   </script>
   <style>
-    body { background-color: #0a0a0a; color: #f5f5f5; }
-    .glow { box-shadow: 0 0 20px rgba(34, 197, 94, 0.15); }
-    .card { background: rgba(26, 26, 26, 0.7); border: 1px solid #262626; }
-    .card:hover { border-color: #22c55e; }
-    .metric-number { background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    :root {
+      --mb-green: #00E676;
+      --mb-green-soft: #69F0AE;
+      --mb-ink: #0a0a1a;
+      --mb-panel: rgba(17, 17, 42, 0.72);
+      --mb-line: rgba(105, 240, 174, 0.18);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: #0a0a1a;
+      color: #F8FAFC;
+      font-family: 'Inter', system-ui, sans-serif;
+      overflow-x: hidden;
+    }
+    .bg-grid {
+      background-image:
+        linear-gradient(rgba(105, 240, 174, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 176, 255, 0.025) 1px, transparent 1px);
+      background-size: 48px 48px, 48px 48px;
+    }
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .orb-green {
+      width: 420px; height: 420px;
+      background: rgba(0, 230, 118, 0.14);
+      top: -140px; right: -80px;
+    }
+    .orb-blue {
+      width: 360px; height: 360px;
+      background: rgba(0, 176, 255, 0.12);
+      top: 30%; left: -120px;
+    }
+    .orb-gold {
+      width: 300px; height: 300px;
+      background: rgba(251, 191, 36, 0.08);
+      bottom: 10%; right: -80px;
+    }
+    .glass {
+      background: linear-gradient(145deg, rgba(20, 24, 56, 0.82), rgba(12, 14, 36, 0.88));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+    .glass-strong {
+      background: rgba(10, 10, 26, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+    }
+    .card-hover {
+      transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+    .card-hover:hover {
+      transform: translateY(-4px);
+      border-color: rgba(0, 230, 118, 0.35);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.42), 0 0 30px rgba(0, 230, 118, 0.08);
+    }
+    .text-gradient {
+      background: linear-gradient(135deg, #00E676 0%, #69F0AE 60%, #00B0FF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .text-gradient-gold {
+      background: linear-gradient(135deg, #FBBF24 0%, #00E676 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid rgba(0, 230, 118, 0.28);
+      border-radius: 999px;
+      background: rgba(0, 230, 118, 0.08);
+      color: #69F0AE;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #00E676, #69F0AE);
+      color: #04120B;
+      font-weight: 800;
+      font-size: 14px;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      box-shadow: 0 14px 36px rgba(0, 230, 118, 0.25);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 44px rgba(0, 230, 118, 0.35);
+    }
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: #F8FAFC;
+      font-weight: 700;
+      font-size: 14px;
+      transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+    }
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      border-color: rgba(0, 230, 118, 0.35);
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .progress-bar {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #00E676, #00B0FF, #FBBF24);
+    }
+    .doc-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: #F8FAFC;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: background 0.15s ease, color 0.15s ease;
+    }
+    .doc-link:hover:not(.doc-locked) {
+      background: rgba(0, 230, 118, 0.08);
+      color: #69F0AE;
+    }
+    .doc-link::before {
+      content: "→";
+      color: #00E676;
+      font-weight: 800;
+    }
+    .doc-locked {
+      color: #6b7280;
+      cursor: not-allowed;
+    }
+    .doc-locked::before { content: "⊘"; color: #6b7280; }
+    .phone-mockup {
+      position: relative;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 230, 118, 0.1);
+      overflow: hidden;
+      background: #0a0a1a;
+      max-height: 620px;
+    }
+    .phone-mockup::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 60%, rgba(10, 10, 26, 0.85) 100%);
+      pointer-events: none;
+    }
+    .phone-mockup img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+    .screenshot-single {
+      width: 100%;
+      max-width: 420px;
+      height: 520px;
+      margin: 0 auto;
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #0a0a1a;
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 230, 118, 0.08);
+      overflow: hidden;
+      position: relative;
+    }
+    .screenshot-single::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      height: 100px;
+      background: linear-gradient(180deg, transparent, rgba(10, 10, 26, 0.9));
+      pointer-events: none;
+    }
+    .screenshot-single img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+    }
+    .metric-card {
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(0, 230, 118, 0.08), transparent 40%);
+      pointer-events: none;
+    }
+    @media (max-width: 768px) {
+      .orb-green, .orb-blue, .orb-gold { display: none; }
+    }
   </style>
 </head>
-<body class="min-h-screen antialiased">
+<body class="min-h-screen antialiased bg-grid">
+  <!-- Ambient glows -->
+  <div class="glow-orb orb-green"></div>
+  <div class="glow-orb orb-blue"></div>
+  <div class="glow-orb orb-gold"></div>
+
   <!-- Sticky nav -->
-  <nav class="sticky top-0 z-50 bg-ink-900/90 backdrop-blur-md border-b border-ink-600">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-money-500 flex items-center justify-center">
-          <svg class="w-6 h-6 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+  <nav class="fixed top-0 left-0 right-0 z-50 glass-strong border-b border-white/8">
+    <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-11 h-11 rounded-xl overflow-hidden border border-mb-green/30 bg-white/5 shadow-neon-sm flex items-center justify-center">
+          <img src="./assets/logo.jpg" alt="MoneyBot" class="w-full h-full object-cover" />
         </div>
-        <span class="font-bold text-lg tracking-tight">MoneyBot</span>
-      </div>
-      <div class="hidden md:flex items-center gap-6 text-sm text-gray-400">
-        <a href="#summary" class="hover:text-white transition">Summary</a>
+        <div class="hidden sm:block">
+          <div class="font-extrabold text-lg leading-tight tracking-tight">MoneyBot</div>
+          <div class="text-[11px] font-bold text-mb-muted uppercase tracking-wider">Investor Data Room</div>
+        </div>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-semibold text-mb-muted">
+        <a href="#opportunity" class="hover:text-white transition">Opportunity</a>
         <a href="#traction" class="hover:text-white transition">Traction</a>
         <a href="#product" class="hover:text-white transition">Product</a>
         <a href="#market" class="hover:text-white transition">Market</a>
+        <a href="#team" class="hover:text-white transition">Team</a>
         <a href="#documents" class="hover:text-white transition">Documents</a>
-        <a href="#contact" class="text-money-400 hover:text-money-500 font-medium">Contact</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-mb-green/10 border border-mb-green/30 text-mb-green-soft text-xs font-extrabold uppercase tracking-wider">
+          <span class="w-1.5 h-1.5 rounded-full bg-mb-green animate-pulse"></span>
+          Pre-Seed
+        </span>
+        <a href="#contact" class="btn-primary !py-2.5 !px-5 text-xs">Contact</a>
       </div>
     </div>
   </nav>
 
   <!-- Hero -->
-  <header class="border-b border-ink-600">
-    <div class="max-w-6xl mx-auto px-6 py-16 md:py-24">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-money-900/30 border border-money-500/30 text-money-400 text-xs font-semibold uppercase tracking-wider mb-6">
-        <span class="w-2 h-2 rounded-full bg-money-500 animate-pulse"></span>
-        Pre-Seed — Raising $500K
+  <header class="relative pt-36 pb-20 md:pt-48 md:pb-28 border-b border-white/8">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-[1.15fr_0.85fr] gap-12 items-center">
+        <div class="relative z-10">
+          <div class="eyebrow mb-6">
+            <span class="w-1.5 h-1.5 rounded-full bg-mb-green"></span>
+            Raising $500K · $90K Committed
+          </div>
+          <h1 class="text-4xl md:text-6xl lg:text-7xl font-black tracking-tight leading-[0.95] mb-6">
+            The AI tutor that teaches kids how <span class="text-gradient">money actually works</span>.
+          </h1>
+          <p class="text-lg md:text-xl text-mb-muted font-medium leading-relaxed max-w-2xl mb-8">
+            MoneyBot is an AI-powered financial literacy companion for kids aged 8–16. We combine personalized conversations, real-world simulations, and gamified challenges to turn financial education from a lecture into a daily habit.
+          </p>
+          <div class="flex flex-wrap gap-4 mb-10">
+            <a href="#documents" class="btn-primary">
+              View Data Room
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path></svg>
+            </a>
+            <a href="mailto:kahlil@getmoneybot.com" class="btn-secondary">Email the Founder</a>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 max-w-2xl">
+            <div class="glass rounded-xl p-4 text-center">
+              <div class="text-2xl md:text-3xl font-black text-gradient">10</div>
+              <div class="text-xs text-mb-muted font-bold uppercase tracking-wider mt-1">Pilot Schools</div>
+            </div>
+            <div class="glass rounded-xl p-4 text-center">
+              <div class="text-2xl md:text-3xl font-black text-gradient">200+</div>
+              <div class="text-xs text-mb-muted font-bold uppercase tracking-wider mt-1">Weekly Active</div>
+            </div>
+            <div class="glass rounded-xl p-4 text-center">
+              <div class="text-2xl md:text-3xl font-black text-gradient">120+</div>
+              <div class="text-xs text-mb-muted font-bold uppercase tracking-wider mt-1">Students</div>
+            </div>
+            <div class="glass rounded-xl p-4 text-center">
+              <div class="text-2xl md:text-3xl font-black text-gradient">$0</div>
+              <div class="text-xs text-mb-muted font-bold uppercase tracking-wider mt-1">Paid Marketing</div>
+            </div>
+          </div>
+        </div>
+        <div class="relative hidden lg:block">
+          <div class="phone-mockup max-w-[320px] mx-auto transform rotate-[-6deg] hover:rotate-0 transition duration-500">
+            <img src="./assets/screenshots/dashboard.png" alt="MoneyBot dashboard" />
+          </div>
+          <div class="absolute -bottom-6 -left-6 glass rounded-2xl p-4 shadow-card border border-mb-green/20 max-w-[220px]">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-mb-green/20 flex items-center justify-center text-mb-green font-black">$</div>
+              <div>
+                <div class="text-xs text-mb-muted font-bold uppercase">Student Quote</div>
+                <div class="text-sm font-semibold leading-tight">"I finally understand what compound interest is."</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6">
-        AI tutor that teaches kids how money actually works.
-      </h1>
-      <p class="text-lg md:text-xl text-gray-400 max-w-3xl leading-relaxed mb-8">
-        MoneyBot is an AI-powered financial literacy companion for kids aged 8–16. 
-        We combine personalized conversations, real-world simulations, and gamified challenges 
-        to turn financial education from a lecture into a habit.
-      </p>
-      <div class="flex flex-wrap gap-4">
-        <a href="#documents" class="inline-flex items-center gap-2 bg-money-500 hover:bg-money-600 text-black font-semibold px-6 py-3 rounded-lg transition">
-          View Documents
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-        </a>
-        <a href="mailto:kahlil@getmoneybot.com" class="inline-flex items-center gap-2 border border-ink-600 hover:border-money-500 text-white font-medium px-6 py-3 rounded-lg transition">
-          Email Founder
-        </a>
-      </div>
-      <p class="mt-6 text-xs text-gray-500 uppercase tracking-widest">
-        Confidential — For prospective investors only
-      </p>
+      <p class="mt-12 text-xs text-mb-muted uppercase tracking-[0.2em] font-bold">Confidential — For prospective investors only</p>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-6 py-16 space-y-24">
+  <main class="max-w-7xl mx-auto px-6 py-20 space-y-32 relative z-10">
 
-    <!-- Summary -->
-    <section id="summary">
-      <div class="grid md:grid-cols-3 gap-8">
-        <div class="md:col-span-2">
-          <h2 class="text-2xl font-bold mb-4">Executive Summary</h2>
-          <div class="space-y-4 text-gray-300 leading-relaxed">
+    <!-- Opportunity / Why Now -->
+    <section id="opportunity">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+        <div>
+          <div class="eyebrow mb-4">The Opportunity</div>
+          <h2 class="section-title mb-6">A generation is learning about money from TikTok and costly mistakes.</h2>
+          <div class="space-y-5 text-mb-muted font-medium leading-relaxed text-[17px]">
             <p>
-              <strong class="text-white">The problem:</strong> 75% of American teens lack basic financial literacy. 
-              Only 23 states require personal finance in high schools. Parents want to teach their kids but don’t know how, 
-              and kids are left learning from TikTok or costly trial-and-error.
+              <strong class="text-white">75% of American teens</strong> lack basic financial literacy. Only 23 states require personal finance in high schools. Parents want to teach their kids but don't know how.
             </p>
             <p>
-              <strong class="text-white">Our solution:</strong> MoneyBot meets kids on their phones with an AI tutor that 
-              adapts to each child’s age, knowledge level, and interests. Kids go from “What’s a stock?” to explaining 
-              compound interest to their parents.
+              The result: kids enter adulthood without understanding credit, investing, taxes, or budgeting. They learn from social media, trial-and-error, or not at all — and the mistakes are expensive.
             </p>
             <p>
-              <strong class="text-white">Traction:</strong> Launched January 2026. In 4 months we reached 
-              <strong class="text-money-400">10 schools</strong>, 
-              <strong class="text-money-400">120+ signed-up students</strong>, and 
-              <strong class="text-money-400">200+ weekly active users</strong> — all organically, with zero marketing spend. 
-              Local news stations in Louisville and Lexington have reached out to cover the story.
+              <strong class="text-white">Why now:</strong> AI makes personalized, scalable education possible for the first time. Gen Alpha is digital-native. Post-COVID schools need modern digital curriculum. And financial literacy is having a legislative and cultural moment.
             </p>
           </div>
         </div>
-        <div class="card rounded-2xl p-6 glow">
-          <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-4">Round Details</h3>
-          <ul class="space-y-3 text-sm">
-            <li class="flex justify-between"><span class="text-gray-400">Stage</span> <span class="text-white font-medium">Pre-Seed</span></li>
-            <li class="flex justify-between"><span class="text-gray-400">Raising</span> <span class="text-money-400 font-medium">$500K</span></li>
-            <li class="flex justify-between"><span class="text-gray-400">Already raised</span> <span class="text-white font-medium">$90K</span></li>
-            <li class="flex justify-between"><span class="text-gray-400">Entity</span> <span class="text-white font-medium">MoneyBot, Inc.</span></li>
-            <li class="flex justify-between"><span class="text-gray-400">Location</span> <span class="text-white font-medium">Bowling Green, KY</span></li>
-            <li class="flex justify-between"><span class="text-gray-400">Founded</span> <span class="text-white font-medium">January 2026</span></li>
-          </ul>
+        <div class="grid gap-4">
+          <div class="glass rounded-2xl p-6 card-hover">
+            <div class="text-4xl font-black text-gradient-gold mb-2">75%</div>
+            <div class="text-white font-bold">Of teens can't explain compound interest</div>
+            <div class="text-sm text-mb-muted mt-1">Basic financial literacy gap in the US</div>
+          </div>
+          <div class="glass rounded-2xl p-6 card-hover">
+            <div class="text-4xl font-black text-mb-blue mb-2">23</div>
+            <div class="text-white font-bold">States require personal finance courses</div>
+            <div class="text-sm text-mb-muted mt-1">Massive underserved market nationwide</div>
+          </div>
+          <div class="glass rounded-2xl p-6 card-hover">
+            <div class="text-4xl font-black text-mb-green mb-2">#1</div>
+            <div class="text-white font-bold">Source of stress for Gen Z is money</div>
+            <div class="text-sm text-mb-muted mt-1">Parents rank financial literacy as a top concern</div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Metrics -->
-    <section id="traction">
-      <h2 class="text-2xl font-bold mb-8">Traction & Metrics</h2>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-        <div class="card rounded-2xl p-6 text-center">
-          <div class="text-3xl md:text-4xl font-bold metric-number mb-2">10</div>
-          <div class="text-sm text-gray-400">Pilot Schools</div>
-        </div>
-        <div class="card rounded-2xl p-6 text-center">
-          <div class="text-3xl md:text-4xl font-bold metric-number mb-2">120+</div>
-          <div class="text-sm text-gray-400">Students Signed Up</div>
-        </div>
-        <div class="card rounded-2xl p-6 text-center">
-          <div class="text-3xl md:text-4xl font-bold metric-number mb-2">200+</div>
-          <div class="text-sm text-gray-400">Weekly Active Users</div>
-        </div>
-        <div class="card rounded-2xl p-6 text-center">
-          <div class="text-3xl md:text-4xl font-bold metric-number mb-2">$0</div>
-          <div class="text-sm text-gray-400">Paid Marketing Spend</div>
-        </div>
+    <!-- Solution -->
+    <section id="solution">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <div class="eyebrow mb-4">Our Solution</div>
+        <h2 class="section-title mb-5">Meet kids where they are — on their phones — with an AI companion that makes money approachable.</h2>
+        <p class="text-mb-muted text-lg font-medium">Think Duolingo meets Khan Academy, but conversational, AI-powered, and built specifically for financial literacy.</p>
       </div>
-
-      <div class="grid md:grid-cols-2 gap-6">
-        <div class="card rounded-2xl p-6">
-          <h3 class="font-semibold mb-4 flex items-center gap-2">
-            <svg class="w-5 h-5 text-money-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-            Growth Milestones
-          </h3>
-          <ul class="space-y-4 text-sm text-gray-300">
-            <li class="flex gap-4">
-              <span class="text-money-500 font-mono whitespace-nowrap">Jan 2026</span>
-              <span>Product launched; first school pilots begin.</span>
-            </li>
-            <li class="flex gap-4">
-              <span class="text-money-500 font-mono whitespace-nowrap">Feb–Apr 2026</span>
-              <span>10 schools signed up organically through teacher referrals.</span>
-            </li>
-            <li class="flex gap-4">
-              <span class="text-money-500 font-mono whitespace-nowrap">May 2026</span>
-              <span>200+ weekly active users; local press coverage in Louisville & Lexington.</span>
-            </li>
-            <li class="flex gap-4">
-              <span class="text-money-500 font-mono whitespace-nowrap">Next 12 mo</span>
-              <span>Target: 100 schools, $10K MRR, 1,000+ paying subscribers.</span>
-            </li>
-          </ul>
-        </div>
-        <div class="card rounded-2xl p-6">
-          <h3 class="font-semibold mb-4 flex items-center gap-2">
-            <svg class="w-5 h-5 text-money-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-            Engagement Signals
-          </h3>
-          <ul class="space-y-3 text-sm text-gray-300">
-            <li class="flex items-start gap-3"><span class="text-money-500">▸</span> Kids engage 15+ minutes per session on average.</li>
-            <li class="flex items-start gap-3"><span class="text-money-500">▸</span> Weekly active user count exceeds signed-up students — repeat usage and classroom rotation.</li>
-            <li class="flex items-start gap-3"><span class="text-money-500">▸</span> Schools asking for admin dashboards and district-wide licensing.</li>
-            <li class="flex items-start gap-3"><span class="text-money-500">▸</span> Parents requesting premium features and parent-dashboard access.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Product -->
-    <section id="product">
-      <h2 class="text-2xl font-bold mb-6">Product</h2>
       <div class="grid md:grid-cols-3 gap-6">
-        <div class="card rounded-2xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-money-900/40 flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-money-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+        <div class="glass rounded-2xl p-7 card-hover">
+          <div class="w-12 h-12 rounded-xl bg-mb-green/10 border border-mb-green/30 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-mb-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
           </div>
-          <h3 class="font-semibold mb-2">AI Conversations</h3>
-          <p class="text-sm text-gray-400">Kids chat with MoneyBot to learn saving, investing, budgeting, and earning at their own pace.</p>
+          <h3 class="text-xl font-bold mb-2">AI Conversations</h3>
+          <p class="text-mb-muted font-medium leading-relaxed">Kids chat with MoneyBot to learn saving, investing, budgeting, and earning. The AI adapts to each child's age, knowledge level, and interests.</p>
         </div>
-        <div class="card rounded-2xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-money-900/40 flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-money-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+        <div class="glass rounded-2xl p-7 card-hover">
+          <div class="w-12 h-12 rounded-xl bg-mb-blue/10 border border-mb-blue/30 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-mb-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
           </div>
-          <h3 class="font-semibold mb-2">Real-World Simulations</h3>
-          <p class="text-sm text-gray-400">Practice with virtual money before touching real accounts — build confidence through doing.</p>
+          <h3 class="text-xl font-bold mb-2">Real-World Simulations</h3>
+          <p class="text-mb-muted font-medium leading-relaxed">Practice with virtual money before touching real accounts. Kids build confidence through doing — from budgeting an allowance to understanding credit.</p>
         </div>
-        <div class="card rounded-2xl p-6">
-          <div class="w-10 h-10 rounded-lg bg-money-900/40 flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-money-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+        <div class="glass rounded-2xl p-7 card-hover">
+          <div class="w-12 h-12 rounded-xl bg-mb-gold/10 border border-mb-gold/30 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-mb-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
           </div>
-          <h3 class="font-semibold mb-2">Parent Dashboard</h3>
-          <p class="text-sm text-gray-400">Parents track progress, set goals, and unlock real-world challenges tied to allowance.</p>
+          <h3 class="text-xl font-bold mb-2">Parent Dashboard</h3>
+          <p class="text-mb-muted font-medium leading-relaxed">Parents track progress, set goals, and unlock real-world challenges tied to allowance — turning lessons into habits at home.</p>
         </div>
       </div>
     </section>
 
-    <!-- Market & Model -->
-    <section id="market" class="grid md:grid-cols-2 gap-12">
-      <div>
-        <h2 class="text-2xl font-bold mb-4">Market Opportunity</h2>
-        <div class="space-y-4 text-gray-300">
-          <p>
-            <strong class="text-white">50 million</strong> kids aged 8–16 in the US. 
-            Capturing just 1% at $80/year ARPU equals a <strong class="text-money-400">$40M ARR</strong> opportunity domestically.
+    <!-- Traction -->
+    <section id="traction">
+      <div class="grid lg:grid-cols-[0.9fr_1.1fr] gap-12 items-start">
+        <div>
+          <div class="eyebrow mb-4">Traction</div>
+          <h2 class="section-title mb-6">Launched January 2026. Four months later, traction is generating its own word of mouth.</h2>
+          <p class="text-mb-muted text-lg font-medium leading-relaxed mb-8">
+            We reached 10 schools and 200+ weekly active users with zero marketing spend. Local news stations in Louisville and Lexington reached out to cover the story — not the other way around.
           </p>
-          <p>
-            The B2B school market alone is an <strong class="text-white">$8B+</strong> annual spend on curriculum, tools, and professional development. 
-            Schools are desperate for modern financial literacy solutions that actually engage students.
-          </p>
-          <p class="text-sm text-gray-400">
-            Indirect competitors (Khan Academy, YouTube, books) are passive and one-size-fits-all. 
-            Direct competitors (Greenlight, GoHenry, FamZoo) focus on spending controls, not education. 
-            MoneyBot owns the <em>learning layer</em>.
-          </p>
+          <div class="glass rounded-2xl p-6 space-y-4">
+            <h3 class="font-bold text-lg flex items-center gap-2">
+              <svg class="w-5 h-5 text-mb-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+              Growth Milestones
+            </h3>
+            <ul class="space-y-4 text-sm text-mb-muted font-medium">
+              <li class="flex gap-4">
+                <span class="text-mb-green font-mono font-bold whitespace-nowrap">Jan 2026</span>
+                <span>Product launched; first school pilots begin.</span>
+              </li>
+              <li class="flex gap-4">
+                <span class="text-mb-green font-mono font-bold whitespace-nowrap">Feb–Apr</span>
+                <span>10 schools signed up organically through teacher referrals.</span>
+              </li>
+              <li class="flex gap-4">
+                <span class="text-mb-green font-mono font-bold whitespace-nowrap">May 2026</span>
+                <span>200+ weekly active users; local press coverage inbound.</span>
+              </li>
+              <li class="flex gap-4">
+                <span class="text-mb-green font-mono font-bold whitespace-nowrap">Next 12 mo</span>
+                <span>Target: 100 schools, $10K MRR, 1,000+ paying subscribers.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="grid gap-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="metric-card glass rounded-2xl p-6 text-center card-hover">
+              <div class="text-4xl md:text-5xl font-black text-gradient mb-2">10</div>
+              <div class="text-sm text-mb-muted font-bold uppercase tracking-wider">Pilot Schools</div>
+            </div>
+            <div class="metric-card glass rounded-2xl p-6 text-center card-hover">
+              <div class="text-4xl md:text-5xl font-black text-gradient mb-2">120+</div>
+              <div class="text-sm text-mb-muted font-bold uppercase tracking-wider">Students Signed Up</div>
+            </div>
+            <div class="metric-card glass rounded-2xl p-6 text-center card-hover">
+              <div class="text-4xl md:text-5xl font-black text-gradient mb-2">200+</div>
+              <div class="text-sm text-mb-muted font-bold uppercase tracking-wider">Weekly Active Users</div>
+            </div>
+            <div class="metric-card glass rounded-2xl p-6 text-center card-hover">
+              <div class="text-4xl md:text-5xl font-black text-gradient mb-2">$0</div>
+              <div class="text-sm text-mb-muted font-bold uppercase tracking-wider">Paid Marketing Spend</div>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-6 card-hover">
+            <h3 class="font-bold text-lg mb-4 flex items-center gap-2">
+              <svg class="w-5 h-5 text-mb-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+              Engagement Signals
+            </h3>
+            <ul class="space-y-3 text-sm text-mb-muted font-medium">
+              <li class="flex items-start gap-3"><span class="text-mb-green font-black">▸</span> Kids engage 15+ minutes per session on average.</li>
+              <li class="flex items-start gap-3"><span class="text-mb-green font-black">▸</span> Weekly active users exceed signed-up students — repeat usage and classroom rotation.</li>
+              <li class="flex items-start gap-3"><span class="text-mb-green font-black">▸</span> Schools asking for admin dashboards and district-wide licensing.</li>
+              <li class="flex items-start gap-3"><span class="text-mb-green font-black">▸</span> Parents requesting premium features and parent-dashboard access.</li>
+              <li class="flex items-start gap-3"><span class="text-mb-green font-black">▸</span> 80% of free pilots convert to paid contracts.</li>
+            </ul>
+          </div>
         </div>
       </div>
-      <div>
-        <h2 class="text-2xl font-bold mb-4">Business Model</h2>
-        <div class="card rounded-2xl p-6 space-y-4">
-          <div class="flex items-start gap-4">
-            <div class="w-8 h-8 rounded-full bg-money-900/40 flex items-center justify-center text-money-500 font-bold text-sm">1</div>
+    </section>
+
+    <!-- Product Gallery -->
+    <section id="product">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <div class="eyebrow mb-4">Product</div>
+        <h2 class="section-title mb-5">A financial terminal built for kids.</h2>
+        <p class="text-mb-muted text-lg font-medium">Premium, cyber-hacker, Robinhood-style UI that makes money feel exciting instead of intimidating.</p>
+      </div>
+      <div class="grid lg:grid-cols-[1fr_380px] gap-10 items-center">
+        <div class="order-2 lg:order-1">
+          <div class="screenshot-single">
+            <img src="./assets/screenshots/testimonials-crop.png" alt="MoneyBot product screenshot showing educator testimonials" />
+          </div>
+          <p class="text-center text-mb-muted text-sm font-medium mt-4">Educator testimonials and FAQ from the MoneyBot site.</p>
+        </div>
+        <div class="order-1 lg:order-2 space-y-4">
+          <div class="glass rounded-xl p-5 card-hover flex items-start gap-4">
+            <div class="w-10 h-10 rounded-lg bg-mb-green/10 border border-mb-green/30 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-mb-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+            </div>
             <div>
-              <h4 class="font-semibold">Free Tier</h4>
-              <p class="text-sm text-gray-400">Basic lessons and limited AI chats to onboard students.</p>
+              <div class="font-bold text-white">AI Tutor</div>
+              <div class="text-sm text-mb-muted font-medium">Personalized Q&A that adapts to each learner's age and knowledge.</div>
             </div>
           </div>
-          <div class="flex items-start gap-4">
-            <div class="w-8 h-8 rounded-full bg-money-900/40 flex items-center justify-center text-money-500 font-bold text-sm">2</div>
+          <div class="glass rounded-xl p-5 card-hover flex items-start gap-4">
+            <div class="w-10 h-10 rounded-lg bg-mb-blue/10 border border-mb-blue/30 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-mb-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+            </div>
             <div>
-              <h4 class="font-semibold">Premium — $9.99/mo or $79/yr</h4>
-              <p class="text-sm text-gray-400">Unlimited tutoring, parent dashboard, real-world challenges, personalized paths.</p>
+              <div class="font-bold text-white">Real-World Simulations</div>
+              <div class="text-sm text-mb-muted font-medium">Practice with virtual money before real accounts — build confidence through doing.</div>
             </div>
           </div>
-          <div class="flex items-start gap-4">
-            <div class="w-8 h-8 rounded-full bg-money-900/40 flex items-center justify-center text-money-500 font-bold text-sm">3</div>
+          <div class="glass rounded-xl p-5 card-hover flex items-start gap-4">
+            <div class="w-10 h-10 rounded-lg bg-mb-gold/10 border border-mb-gold/30 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-mb-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            </div>
             <div>
-              <h4 class="font-semibold">B2B School / District Licenses</h4>
-              <p class="text-sm text-gray-400">Bulk pricing, admin dashboards, curriculum alignment, teacher PD.</p>
+              <div class="font-bold text-white">Parent Dashboard</div>
+              <div class="text-sm text-mb-muted font-medium">Parents track progress, set goals, and unlock real-world challenges.</div>
             </div>
           </div>
+          <div class="glass rounded-xl p-5 card-hover flex items-start gap-4">
+            <div class="w-10 h-10 rounded-lg bg-mb-green/10 border border-mb-green/30 flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-mb-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <div>
+              <div class="font-bold text-white">Gamified Challenges</div>
+              <div class="text-sm text-mb-muted font-medium">Quests, leaderboards, and rewards that make learning money addictive.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Market & Business Model -->
+    <section id="market">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-20">
+        <div>
+          <div class="eyebrow mb-4">Market</div>
+          <h2 class="section-title mb-6">A $40M+ ARR opportunity domestically — before we leave the US.</h2>
+          <div class="space-y-5 text-mb-muted font-medium leading-relaxed text-[17px]">
+            <p>
+              <strong class="text-white">50 million</strong> kids aged 8–16 in the US. Capturing just 1% at $80/year ARPU equals a <span class="text-mb-green font-bold">$40M ARR</span> opportunity domestically.
+            </p>
+            <p>
+              The B2B school market alone is an <strong class="text-white">$8B+</strong> annual spend on curriculum, tools, and professional development. Schools are desperate for modern financial literacy solutions that actually engage students.
+            </p>
+            <p>
+              <strong class="text-white">Competitive landscape:</strong> Greenlight, GoHenry, and FamZoo focus on spending controls, not education. Khan Academy and YouTube are passive and one-size-fits-all. MoneyBot owns the <em class="text-white">learning layer</em>.
+            </p>
+          </div>
+        </div>
+        <div>
+          <div class="eyebrow mb-4">Business Model</div>
+          <h2 class="section-title mb-6">B2B2C from day one.</h2>
+          <div class="space-y-4">
+            <div class="glass rounded-2xl p-6 flex items-start gap-4 card-hover">
+              <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-mb-green font-black flex-shrink-0">1</div>
+              <div>
+                <h4 class="font-bold text-lg">Free Tier</h4>
+                <p class="text-mb-muted font-medium">Basic lessons and limited AI chats to onboard every student.</p>
+              </div>
+            </div>
+            <div class="glass rounded-2xl p-6 flex items-start gap-4 card-hover">
+              <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-mb-blue font-black flex-shrink-0">2</div>
+              <div>
+                <h4 class="font-bold text-lg">Premium — $9.99/mo or $79/yr</h4>
+                <p class="text-mb-muted font-medium">Unlimited tutoring, parent dashboard, real-world challenges, personalized paths.</p>
+              </div>
+            </div>
+            <div class="glass rounded-2xl p-6 flex items-start gap-4 card-hover">
+              <div class="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-mb-gold font-black flex-shrink-0">3</div>
+              <div>
+                <h4 class="font-bold text-lg">B2B School / District Licenses</h4>
+                <p class="text-mb-muted font-medium">Bulk pricing, admin dashboards, curriculum alignment, teacher PD.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Go-to-Market -->
+    <section id="gtm">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <div class="eyebrow mb-4">Go-to-Market</div>
+        <h2 class="section-title mb-5">No chicken-and-egg problem. Single school gets value from day one.</h2>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass rounded-2xl p-6 card-hover">
+          <div class="w-10 h-10 rounded-lg bg-mb-green/10 border border-mb-green/30 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-mb-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+          </div>
+          <h3 class="font-bold mb-2">Schools First</h3>
+          <p class="text-sm text-mb-muted font-medium">10 schools signed up organically. We expand through district partnerships and teacher referrals.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 card-hover">
+          <div class="w-10 h-10 rounded-lg bg-mb-blue/10 border border-mb-blue/30 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-mb-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+          </div>
+          <h3 class="font-bold mb-2">Organic & TikTok</h3>
+          <p class="text-sm text-mb-muted font-medium">Short-form content showing kids' "aha moments" with money — highly shareable.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 card-hover">
+          <div class="w-10 h-10 rounded-lg bg-mb-gold/10 border border-mb-gold/30 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-mb-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+          </div>
+          <h3 class="font-bold mb-2">Parent Communities</h3>
+          <p class="text-sm text-mb-muted font-medium">Facebook groups, Reddit, school PTAs — parents want help teaching money skills.</p>
+        </div>
+        <div class="glass rounded-2xl p-6 card-hover">
+          <div class="w-10 h-10 rounded-lg bg-mb-green/10 border border-mb-green/30 flex items-center justify-center mb-4">
+            <svg class="w-5 h-5 text-mb-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path></svg>
+          </div>
+          <h3 class="font-bold mb-2">Press & Word of Mouth</h3>
+          <p class="text-sm text-mb-muted font-medium">Local news already calling. Kids talk to kids; parents talk to parents.</p>
         </div>
       </div>
     </section>
 
     <!-- Use of Funds -->
-    <section>
-      <h2 class="text-2xl font-bold mb-6">Use of Funds — $500K Seed</h2>
-      <div class="grid md:grid-cols-2 gap-8 items-center">
-        <div class="space-y-4">
-          <div>
-            <div class="flex justify-between text-sm mb-1"><span class="text-gray-300">Engineering (hire 2 developers)</span><span class="text-money-400 font-medium">40%</span></div>
-            <div class="h-2 bg-ink-700 rounded-full overflow-hidden"><div class="h-full bg-money-500 rounded-full" style="width: 40%"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1"><span class="text-gray-300">Sales & Marketing (B2B outreach, content)</span><span class="text-money-400 font-medium">30%</span></div>
-            <div class="h-2 bg-ink-700 rounded-full overflow-hidden"><div class="h-full bg-money-500 rounded-full" style="width: 30%"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1"><span class="text-gray-300">Operations (customer success, admin)</span><span class="text-money-400 font-medium">20%</span></div>
-            <div class="h-2 bg-ink-700 rounded-full overflow-hidden"><div class="h-full bg-money-500 rounded-full" style="width: 20%"></div></div>
-          </div>
-          <div>
-            <div class="flex justify-between text-sm mb-1"><span class="text-gray-300">Buffer</span><span class="text-money-400 font-medium">10%</span></div>
-            <div class="h-2 bg-ink-700 rounded-full overflow-hidden"><div class="h-full bg-money-500 rounded-full" style="width: 10%"></div></div>
+    <section id="useoffunds">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="eyebrow mb-4">Use of Funds</div>
+          <h2 class="section-title mb-6">$500K extends runway to hit 100 schools and $10K MRR.</h2>
+          <p class="text-mb-muted text-lg font-medium leading-relaxed mb-8">
+            The round funds 12-18 months of execution: two engineers, B2B sales and marketing, and the customer-success infrastructure needed to convert pilots into district contracts.
+          </p>
+          <div class="space-y-5">
+            <div>
+              <div class="flex justify-between text-sm font-bold mb-2"><span class="text-white">Engineering (hire 2 developers)</span><span class="text-mb-green">40%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width: 40%"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm font-bold mb-2"><span class="text-white">Sales & Marketing (B2B outreach, content)</span><span class="text-mb-blue">30%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width: 30%"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm font-bold mb-2"><span class="text-white">Operations (customer success, admin)</span><span class="text-mb-gold">20%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width: 20%"></div></div>
+            </div>
+            <div>
+              <div class="flex justify-between text-sm font-bold mb-2"><span class="text-white">Buffer</span><span class="text-mb-muted">10%</span></div>
+              <div class="progress-bar"><div class="progress-fill" style="width: 10%"></div></div>
+            </div>
           </div>
         </div>
-        <div class="card rounded-2xl p-6">
-          <h3 class="font-semibold mb-3">12-Month Targets</h3>
-          <ul class="space-y-2 text-sm text-gray-300">
-            <li class="flex justify-between border-b border-ink-600 pb-2"><span>Schools</span><span class="text-white font-medium">100</span></li>
-            <li class="flex justify-between border-b border-ink-600 pb-2"><span>Paying subscribers</span><span class="text-white font-medium">1,000+</span></li>
-            <li class="flex justify-between border-b border-ink-600 pb-2"><span>MRR</span><span class="text-white font-medium">$10K</span></li>
-            <li class="flex justify-between border-b border-ink-600 pb-2"><span>District-wide contracts</span><span class="text-white font-medium">3–5</span></li>
-            <li class="flex justify-between pt-1"><span>Team</span><span class="text-white font-medium">3 (founder + 2 engineers)</span></li>
-          </ul>
+        <div class="glass rounded-2xl p-8 card-hover">
+          <h3 class="font-bold text-xl mb-6 flex items-center gap-2">
+            <svg class="w-6 h-6 text-mb-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            12-Month Targets
+          </h3>
+          <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5">
+              <span class="text-mb-muted font-semibold">Schools</span>
+              <span class="text-2xl font-black text-white">100</span>
+            </div>
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5">
+              <span class="text-mb-muted font-semibold">Paying Subscribers</span>
+              <span class="text-2xl font-black text-white">1,000+</span>
+            </div>
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5">
+              <span class="text-mb-muted font-semibold">MRR</span>
+              <span class="text-2xl font-black text-mb-green">$10K</span>
+            </div>
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5">
+              <span class="text-mb-muted font-semibold">District Contracts</span>
+              <span class="text-2xl font-black text-white">3–5</span>
+            </div>
+            <div class="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/5">
+              <span class="text-mb-muted font-semibold">Team</span>
+              <span class="text-2xl font-black text-white">3</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Team -->
-    <section>
-      <h2 class="text-2xl font-bold mb-6">Team</h2>
-      <div class="card rounded-2xl p-8 max-w-2xl">
-        <div class="flex items-start gap-5">
-          <div class="w-16 h-16 rounded-full bg-money-900/40 flex items-center justify-center text-money-500 text-2xl font-bold">
-            KG
-          </div>
-          <div>
-            <h3 class="text-xl font-bold">Kahlil Garmon</h3>
-            <p class="text-money-400 font-medium mb-3">Founder & CEO</p>
-            <ul class="space-y-2 text-sm text-gray-300">
-              <li class="flex items-start gap-2"><span class="text-money-500">▸</span> Built gamification systems for colleges at MyXR.</li>
-              <li class="flex items-start gap-2"><span class="text-money-500">▸</span> Implemented tech solutions at a construction company — real business operations experience.</li>
-              <li class="flex items-start gap-2"><span class="text-money-500">▸</span> Board member at the Kentucky Center for Leadership.</li>
-              <li class="flex items-start gap-2"><span class="text-money-500">▸</span> Full-time on MoneyBot since January 2026.</li>
-            </ul>
+    <section id="team">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <div class="eyebrow mb-4">Team</div>
+        <h2 class="section-title mb-5">Built by a founder who can ship, sell, and scale in education.</h2>
+      </div>
+      <div class="max-w-3xl mx-auto">
+        <div class="glass rounded-3xl p-8 md:p-10 card-hover">
+          <div class="flex flex-col md:flex-row items-start gap-6">
+            <div class="w-20 h-20 rounded-2xl overflow-hidden border-2 border-mb-green/30 shadow-neon flex-shrink-0 bg-gradient-to-br from-mb-green/20 to-mb-blue/20 flex items-center justify-center">
+              <span class="text-2xl font-black text-white">KG</span>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-2xl font-black">Kahlil Garmon</h3>
+              <p class="text-mb-green font-bold mb-4">Founder & CEO</p>
+              <ul class="space-y-3 text-mb-muted font-medium">
+                <li class="flex items-start gap-3"><span class="text-mb-green font-black">▸</span> Built gamification systems for colleges at <strong class="text-white">MyXR</strong>.</li>
+                <li class="flex items-start gap-3"><span class="text-mb-green font-black">▸</span> Implemented tech solutions at a construction company — real business operations experience.</li>
+                <li class="flex items-start gap-3"><span class="text-mb-green font-black">▸</span> Board member at the <strong class="text-white">Kentucky Center for Leadership</strong>.</li>
+                <li class="flex items-start gap-3"><span class="text-mb-green font-black">▸</span> Full-time on MoneyBot since January 2026.</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -330,83 +741,98 @@
 
     <!-- Documents -->
     <section id="documents">
-      <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold">Document Library</h2>
-        <span class="text-xs text-gray-500 uppercase tracking-wider">Items marked “Add” need upload</span>
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+        <div>
+          <div class="eyebrow mb-4">Document Library</div>
+          <h2 class="section-title">Due diligence materials.</h2>
+        </div>
+        <p class="text-mb-muted font-medium max-w-md">Materials marked <span class="inline-flex items-center px-2 py-0.5 rounded bg-white/10 text-xs font-bold text-mb-muted ml-1">Coming Soon</span> are being prepared for upload.</p>
       </div>
 
-      <div class="grid md:grid-cols-2 gap-6">
+      <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
         <!-- Pitch Materials -->
-        <div class="card rounded-2xl p-6">
-          <h3 class="font-semibold mb-4 flex items-center gap-2 text-money-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
-            Pitch Materials
-          </h3>
-          <ul class="space-y-3">
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">Pitch Deck PDF <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">One-Pager PDF <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
+        <div class="glass rounded-2xl p-6 card-hover">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-mb-green/10 border border-mb-green/30 flex items-center justify-center">
+              <svg class="w-5 h-5 text-mb-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>
+            </div>
+            <h3 class="font-bold text-lg">Pitch Materials</h3>
+          </div>
+          <ul class="space-y-1">
+            <li><span class="doc-link doc-locked">Pitch Deck PDF <span class="ml-auto px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold uppercase">Coming Soon</span></span></li>
+            <li><span class="doc-link doc-locked">One-Pager PDF <span class="ml-auto px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold uppercase">Coming Soon</span></span></li>
             <li><a href="https://docs.google.com/document/d/1QtKbV28KFshJNacVuffxdqgcSPMwMpd3-xd2O6XodeQ/edit" target="_blank" rel="noopener" class="doc-link">YC Application — Summer 2026</a></li>
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">Demo Video (2–3 min) <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
+            <li><span class="doc-link doc-locked">Demo Video (2–3 min) <span class="ml-auto px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold uppercase">Coming Soon</span></span></li>
           </ul>
         </div>
 
         <!-- Product -->
-        <div class="card rounded-2xl p-6">
-          <h3 class="font-semibold mb-4 flex items-center gap-2 text-money-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
-            Product
-          </h3>
-          <ul class="space-y-3">
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">Product Screenshots <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">Product Demo Video <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">User Testimonials <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
+        <div class="glass rounded-2xl p-6 card-hover">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-mb-blue/10 border border-mb-blue/30 flex items-center justify-center">
+              <svg class="w-5 h-5 text-mb-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+            </div>
+            <h3 class="font-bold text-lg">Product</h3>
+          </div>
+          <ul class="space-y-1">
+            <li><a href="#product" class="doc-link">Product Screenshots</a></li>
+            <li><span class="doc-link doc-locked">Product Demo Video <span class="ml-auto px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold uppercase">Coming Soon</span></span></li>
+            <li><span class="doc-link doc-locked">User Testimonials <span class="ml-auto px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold uppercase">Coming Soon</span></span></li>
           </ul>
         </div>
 
         <!-- Traction -->
-        <div class="card rounded-2xl p-6">
-          <h3 class="font-semibold mb-4 flex items-center gap-2 text-money-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
-            Traction & Metrics
-          </h3>
-          <ul class="space-y-3">
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">User Metrics Dashboard <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">Press Coverage Links <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
+        <div class="glass rounded-2xl p-6 card-hover">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-mb-gold/10 border border-mb-gold/30 flex items-center justify-center">
+              <svg class="w-5 h-5 text-mb-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            </div>
+            <h3 class="font-bold text-lg">Traction & Metrics</h3>
+          </div>
+          <ul class="space-y-1">
+            <li><span class="doc-link doc-locked">User Metrics Dashboard <span class="ml-auto px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold uppercase">Coming Soon</span></span></li>
+            <li><span class="doc-link doc-locked">Press Coverage Links <span class="ml-auto px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold uppercase">Coming Soon</span></span></li>
           </ul>
         </div>
 
         <!-- Financials -->
-        <div class="card rounded-2xl p-6">
-          <h3 class="font-semibold mb-4 flex items-center gap-2 text-money-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-            Financials
-          </h3>
-          <ul class="space-y-3">
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">Financial Projections <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">Cap Table <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
-            <li><span class="doc-link text-gray-300">Use of Funds — $500K Seed (detailed above)</span></li>
+        <div class="glass rounded-2xl p-6 card-hover">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-mb-green/10 border border-mb-green/30 flex items-center justify-center">
+              <svg class="w-5 h-5 text-mb-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            </div>
+            <h3 class="font-bold text-lg">Financials</h3>
+          </div>
+          <ul class="space-y-1">
+            <li><span class="doc-link doc-locked">Financial Projections <span class="ml-auto px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold uppercase">Coming Soon</span></span></li>
+            <li><span class="doc-link doc-locked">Cap Table <span class="ml-auto px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold uppercase">Coming Soon</span></span></li>
+            <li><span class="doc-link text-white/70">Use of Funds — $500K Seed (detailed above)</span></li>
           </ul>
         </div>
 
         <!-- Legal -->
-        <div class="card rounded-2xl p-6">
-          <h3 class="font-semibold mb-4 flex items-center gap-2 text-money-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-            Legal
-          </h3>
-          <ul class="space-y-3">
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">Certificate of Incorporation <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
-            <li><a href="#" class="doc-link opacity-50 cursor-not-allowed" onclick="return false;">IP Assignment / Founder Agreements <span class="text-xs text-yellow-500 ml-2">Add</span></a></li>
+        <div class="glass rounded-2xl p-6 card-hover">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+              <svg class="w-5 h-5 text-mb-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            </div>
+            <h3 class="font-bold text-lg">Legal</h3>
+          </div>
+          <ul class="space-y-1">
+            <li><span class="doc-link doc-locked">Certificate of Incorporation <span class="ml-auto px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold uppercase">Coming Soon</span></span></li>
+            <li><span class="doc-link doc-locked">IP Assignment / Founder Agreements <span class="ml-auto px-2 py-0.5 rounded bg-white/10 text-[10px] font-bold uppercase">Coming Soon</span></span></li>
           </ul>
         </div>
 
         <!-- Applications -->
-        <div class="card rounded-2xl p-6">
-          <h3 class="font-semibold mb-4 flex items-center gap-2 text-money-400">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-            Accelerator Applications
-          </h3>
-          <ul class="space-y-3">
+        <div class="glass rounded-2xl p-6 card-hover">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-mb-green/10 border border-mb-green/30 flex items-center justify-center">
+              <svg class="w-5 h-5 text-mb-green" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
+            </div>
+            <h3 class="font-bold text-lg">Accelerator Applications</h3>
+          </div>
+          <ul class="space-y-1">
             <li><a href="https://docs.google.com/document/d/1QtKbV28KFshJNacVuffxdqgcSPMwMpd3-xd2O6XodeQ/edit" target="_blank" rel="noopener" class="doc-link">Y Combinator — Summer 2026</a></li>
             <li><a href="https://docs.google.com/document/d/1rcjkPmJOWj3SRd_9McpetC3UPZixAXXZbaptSe1Hmnc/edit" target="_blank" rel="noopener" class="doc-link">LearnLaunch</a></li>
             <li><a href="https://docs.google.com/document/d/1YGUs34huURhWPvmqsZI5EphW1abmHrtCMaZKyElRGCg/edit" target="_blank" rel="noopener" class="doc-link">South Park Commons</a></li>
@@ -417,40 +843,47 @@
     </section>
 
     <!-- Contact -->
-    <section id="contact" class="card rounded-2xl p-8 md:p-12 text-center glow">
-      <h2 class="text-2xl md:text-3xl font-bold mb-4">Ready to talk?</h2>
-      <p class="text-gray-400 mb-8 max-w-xl mx-auto">
-        If you’re interested in participating in the $500K seed round, schedule a call or request the full financial model and cap table.
-      </p>
-      <div class="flex flex-wrap justify-center gap-4">
-        <a href="mailto:kahlil@getmoneybot.com" class="inline-flex items-center gap-2 bg-money-500 hover:bg-money-600 text-black font-semibold px-6 py-3 rounded-lg transition">
-          Email Kahlil
-        </a>
-        <a href="#documents" class="inline-flex items-center gap-2 border border-ink-600 hover:border-money-500 text-white font-medium px-6 py-3 rounded-lg transition">
-          Back to Documents
-        </a>
+    <section id="contact" class="glass rounded-3xl p-10 md:p-16 text-center shadow-neon border border-mb-green/20">
+      <div class="max-w-2xl mx-auto">
+        <div class="eyebrow mb-5 mx-auto">Ready to talk?</div>
+        <h2 class="text-3xl md:text-5xl font-black mb-5">Join the $500K seed round.</h2>
+        <p class="text-mb-muted text-lg font-medium mb-10">
+          If you're interested in participating, schedule a call or request the full financial model, cap table, and product demo.
+        </p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <a href="mailto:kahlil@getmoneybot.com" class="btn-primary">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            Email Kahlil
+          </a>
+          <a href="#documents" class="btn-secondary">Back to Documents</a>
+        </div>
       </div>
     </section>
 
   </main>
 
-  <footer class="border-t border-ink-600 mt-12">
-    <div class="max-w-6xl mx-auto px-6 py-8 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-gray-500">
-      <p>© 2026 MoneyBot. Confidential investor materials.</p>
-      <p>Last updated: June 28, 2026</p>
+  <footer class="border-t border-white/8 mt-20">
+    <div class="max-w-7xl mx-auto px-6 py-10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-mb-muted font-semibold">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg overflow-hidden border border-white/10">
+          <img src="./assets/logo.jpg" alt="MoneyBot" class="w-full h-full object-cover" />
+        </div>
+        <p>© 2026 MoneyBot, Inc. Confidential investor materials.</p>
+      </div>
+      <p>Last updated: June 29, 2026</p>
     </div>
   </footer>
 
-  <style>
-    .doc-link {
-      display: flex; align-items: center; gap: 0.5rem;
-      color: #e5e5e5; text-decoration: none; font-size: 0.95rem;
-      transition: color 0.15s;
-    }
-    .doc-link:not(.opacity-50):hover { color: #22c55e; }
-    .doc-link:not(.opacity-50)::before {
-      content: "→"; color: #22c55e; font-weight: bold;
-    }
-  </style>
+  <script>
+    // Sticky header background transition
+    const header = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 20) {
+        header.classList.add('bg-opacity-95');
+      } else {
+        header.classList.remove('bg-opacity-95');
+      }
+    });
+  </script>
 </body>
 </html>
