@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoneyBot — Investment Memo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; background: #ffffff; color: #0a0a0a; -webkit-font-smoothing: antialiased; }
+    h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; }
+    h2 { font-size: 18px; font-weight: 800; margin-top: 32px; margin-bottom: 12px; letter-spacing: -0.01em; }
+    h3 { font-size: 14px; font-weight: 700; margin-top: 18px; margin-bottom: 6px; }
+    p, li { font-size: 14px; line-height: 1.6; color: #262626; }
+    .label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: #00C853; }
+    .metric { font-size: 26px; font-weight: 800; letter-spacing: -0.03em; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e5e5e5; }
+    th { font-weight: 700; color: #525252; background: #fafafa; }
+    .page { max-width: 720px; margin: 0 auto; padding: 60px 24px; }
+    @media print {
+      .no-print { display: none; }
+      body { background: #fff; }
+      .page { padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="flex items-center justify-between mb-8">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg overflow-hidden border border-neutral-200">
+          <img src="./assets/logo.jpg" alt="MoneyBot" class="w-full h-full object-cover" />
+        </div>
+        <div>
+          <div class="font-bold text-sm">MoneyBot</div>
+          <div class="text-xs text-neutral-500">Investment Memo</div>
+        </div>
+      </div>
+      <div class="label">Pre-Seed</div>
+    </div>
+
+    <h1 class="mb-4">MoneyBot is building the financial literacy layer for the next generation.</h1>
+    <p class="text-lg text-neutral-600 mb-8">
+      An AI tutor that teaches kids aged 8–16 how to earn, save, spend, and invest through personalized conversations and real-world practice.
+    </p>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+      <div class="p-4 rounded-xl border border-neutral-200">
+        <div class="text-xs text-neutral-500 uppercase font-bold tracking-wider mb-1">Raising</div>
+        <div class="metric">$500K</div>
+      </div>
+      <div class="p-4 rounded-xl border border-neutral-200">
+        <div class="text-xs text-neutral-500 uppercase font-bold tracking-wider mb-1">Committed</div>
+        <div class="metric">$90K</div>
+      </div>
+      <div class="p-4 rounded-xl border border-neutral-200">
+        <div class="text-xs text-neutral-500 uppercase font-bold tracking-wider mb-1">Schools</div>
+        <div class="metric">10</div>
+      </div>
+      <div class="p-4 rounded-xl border border-neutral-200">
+        <div class="text-xs text-neutral-500 uppercase font-bold tracking-wider mb-1">WAU</div>
+        <div class="metric">200+</div>
+      </div>
+    </div>
+
+    <h2>The Opportunity</h2>
+    <p>
+      75% of American teens lack basic financial literacy. Only 23 states require personal finance in high schools. Parents want to teach their kids but don't know how, and kids are learning about money from TikTok and costly trial-and-error. The result is a generation entering adulthood without the skills to manage debt, build credit, or invest.
+    </p>
+
+    <h2>The Solution</h2>
+    <p>
+      MoneyBot meets kids on their phones with an AI tutor that adapts to each child's age, knowledge level, and interests. Kids go from "What's a stock?" to explaining compound interest to their parents. The product combines conversational AI, gamified lessons, quests, and a parent dashboard into one simple experience.
+    </p>
+
+    <h2>Traction</h2>
+    <ul class="list-disc pl-5 space-y-1 mb-4">
+      <li>Launched January 2026</li>
+      <li>10 pilot schools signed organically through educator referrals</li>
+      <li>120+ students signed up</li>
+      <li>200+ weekly active users</li>
+      <li>$0 paid marketing spend</li>
+      <li>Local press coverage in Louisville and Lexington</li>
+    </ul>
+
+    <h2>Business Model</h2>
+    <p>
+      B2C subscription at $9.99/month or $79/year per family, with school district licenses in development. Organic teacher-to-parent adoption keeps customer acquisition costs low and creates a natural expansion path from classroom to home.
+    </p>
+
+    <h2>Market</h2>
+    <table>
+      <tr><th>Segment</th><th>Size</th></tr>
+      <tr><td>TAM — Global edtech + youth financial wellness</td><td>$60B+</td></tr>
+      <tr><td>SAM — U.S. K–12 financial literacy + family finance</td><td>$8B</td></tr>
+      <tr><td>SOM — Southeast parents + districts</td><td>$200M</td></tr>
+    </table>
+
+    <h2>Use of Funds</h2>
+    <table>
+      <tr><th>Allocation</th><th>%</th><th>Amount</th></tr>
+      <tr><td>Product & Engineering</td><td>45%</td><td>$225K</td></tr>
+      <tr><td>Growth & Partnerships</td><td>30%</td><td>$150K</td></tr>
+      <tr><td>Operations</td><td>15%</td><td>$75K</td></tr>
+      <tr><td>Reserve</td><td>10%</td><td>$50K</td></tr>
+    </table>
+
+    <h2>Team</h2>
+    <p>
+      <strong>Kahlil Garmon, Founder & CEO.</strong> Previously built gamification systems at MyXR and implemented technology at a construction company. Board member at the Kentucky Center for Leadership. Full-time on MoneyBot since January 2026.
+    </p>
+
+    <h2>Investment Thesis</h2>
+    <p>
+      MoneyBot is attacking a large, emotionally resonant problem at the right moment: AI makes personalized education scalable for the first time, schools are under pressure to teach financial literacy, and parents are desperate for help. Early organic traction proves the product works and the channel is real.
+    </p>
+
+    <div class="mt-12 pt-8 border-t border-neutral-200 no-print">
+      <a href="./investor.html" class="inline-flex items-center gap-2 text-sm font-bold text-[#00C853] hover:underline">← Back to data room</a>
+    </div>
+  </div>
+</body>
+</html>

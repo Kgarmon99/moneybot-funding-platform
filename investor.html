@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MoneyBot — Investor Data Room</title>
   <meta name="description" content="MoneyBot investor data room. Pre-Seed $500K raise. AI-powered financial literacy for kids aged 8-16." />
+  <!-- Analytics: add your Plausible / Google Analytics snippet here -->
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -210,6 +211,7 @@
         <a href="#product" class="nav-link">Product</a>
         <a href="#market" class="nav-link">Market</a>
         <a href="#team" class="nav-link">Team</a>
+        <a href="./investor-memo.html" class="nav-link">Memo</a>
         <a href="#documents" class="nav-link">Documents</a>
       </div>
       <a href="#contact" class="btn-primary !py-2 !px-5 text-xs">Contact</a>
@@ -228,7 +230,7 @@
           MoneyBot is an AI tutor that turns kids aged 8–16 into confident money managers. We meet them on their phones, adapt to how they learn, and give parents the tools they never had.
         </p>
         <div class="flex flex-wrap gap-4 mb-16">
-          <a href="#contact" class="btn-primary">Request investor materials</a>
+          <a href="./investor-memo.html" class="btn-primary">Read investment memo</a>
           <a href="#documents" class="btn-outline">View documents</a>
         </div>
       </div>
@@ -257,6 +259,31 @@
       </div>
     </div>
   </header>
+
+  <!-- Demo -->
+  <section class="py-16 md:py-24 border-b border-mb-border">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <div class="label mb-6">Product Demo</div>
+          <h2 class="heading-lg mb-6">See MoneyBot in action.</h2>
+          <p class="body-lg">
+            A 60-second walkthrough of how kids use the AI tutor, complete quests, and build real financial habits — and how parents track progress.
+          </p>
+        </div>
+        <div class="card rounded-2xl p-3 aspect-video flex items-center justify-center relative overflow-hidden">
+          <div class="absolute inset-0 bg-gradient-to-br from-mb-green/5 to-transparent"></div>
+          <div class="text-center relative z-10">
+            <div class="w-16 h-16 rounded-full border border-mb-green/30 bg-mb-green/10 flex items-center justify-center mx-auto mb-4">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-mb-green ml-1"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            </div>
+            <div class="text-sm font-semibold text-white mb-1">Demo video</div>
+            <div class="text-xs text-mb-muted">Upload your .mp4 to deploy</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Opportunity -->
   <section id="opportunity" class="section border-b border-mb-border">
@@ -375,6 +402,46 @@
             <div class="metric-number">$0</div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Social Proof -->
+  <section class="section border-b border-mb-border">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-3xl mb-12">
+        <div class="label mb-6">Social Proof</div>
+        <h2 class="heading-lg mb-6">Trusted by educators. Covered by press.</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6 mb-10">
+        <div class="card p-8 rounded-2xl">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2" class="mb-6"><path d="M3 21c3 0 7-1 7-8V5a2 2 0 0 1 2-2h4c1 0 2 1 2 2v1a2 2 0 0 1-2 2h-4"/><path d="M17 21c-3 0-7-1-7-8V5a2 2 0 0 0-2-2H4c-1 0-2 1-2 2v1a2 2 0 0 0 2 2h4"/></svg>
+          <p class="text-white text-lg font-medium leading-relaxed mb-6">
+            "MoneyBot is the first tool my students actually want to use. They're having real conversations about saving and investing at age 12."
+          </p>
+          <div>
+            <div class="font-bold text-sm">Pilot Educator</div>
+            <div class="text-mb-muted text-xs">Kentucky middle school</div>
+          </div>
+        </div>
+        <div class="card p-8 rounded-2xl">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00E676" stroke-width="2" class="mb-6"><path d="M3 21c3 0 7-1 7-8V5a2 2 0 0 1 2-2h4c1 0 2 1 2 2v1a2 2 0 0 1-2 2h-4"/><path d="M17 21c-3 0-7-1-7-8V5a2 2 0 0 0-2-2H4c-1 0-2 1-2 2v1a2 2 0 0 0 2 2h4"/></svg>
+          <p class="text-white text-lg font-medium leading-relaxed mb-6">
+            "I finally have a way to talk to my daughter about money without it feeling like a lecture. She teaches me things now."
+          </p>
+          <div>
+            <div class="font-bold text-sm">Parent of MoneyBot user</div>
+            <div class="text-mb-muted text-xs">Bowling Green, KY</div>
+          </div>
+        </div>
+      </div>
+      <div class="card p-6 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <div class="text-mb-muted text-xs font-bold uppercase tracking-wider mb-1">Press</div>
+          <div class="font-bold">Louisville Business First</div>
+          <div class="text-sm text-mb-muted">"MoneyBot founder Kahlil Garmon launches financial literacy startup"</div>
+        </div>
+        <a href="#" class="btn-outline !py-2.5 !px-5 text-xs">Read article</a>
       </div>
     </div>
   </section>
@@ -598,6 +665,44 @@
 
   <!-- Documents -->
   <section id="documents" class="section border-b border-mb-border">
+    <script>
+      function unlockDocs() {
+        const pw = document.getElementById('doc-password').value;
+        if (pw === 'moneybot2026') {
+          document.querySelectorAll('.doc-locked').forEach(el => {
+            el.classList.remove('doc-locked');
+            el.querySelector('svg').style.color = '#00E676';
+            const span = el.querySelector('.locked-label');
+            if (span) span.textContent = 'Download';
+          });
+          document.getElementById('doc-gate').style.display = 'none';
+          document.getElementById('doc-unlocked').style.display = 'block';
+        } else {
+          document.getElementById('pw-error').style.display = 'block';
+        }
+      }
+    </script>
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-3xl mb-12">
+        <div class="label mb-6">Documents</div>
+        <h2 class="heading-lg mb-6">Due diligence materials.</h2>
+        <p class="body-lg">
+          Live links to application materials and investor resources. Sensitive documents are gated — request access below.
+        </p>
+      </div>
+
+      <div id="doc-gate" class="card p-6 md:p-8 rounded-2xl mb-10 max-w-xl">
+        <h3 class="text-lg font-bold mb-2">Access sensitive documents</h3>
+        <p class="text-sm text-mb-muted mb-4">Enter the investor password to unlock the pitch deck, financial model, cap table, and legal docs.</p>
+        <div class="flex gap-3">
+          <input id="doc-password" type="password" placeholder="Password" class="flex-1 bg-black border border-mb-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-mb-green">
+          <button onclick="unlockDocs()" class="btn-primary !py-3 !px-5">Unlock</button>
+        </div>
+        <div id="pw-error" class="text-red-500 text-xs mt-3 hidden">Incorrect password.</div>
+      </div>
+      <div id="doc-unlocked" class="hidden text-mb-green text-sm font-semibold mb-10">Sensitive documents unlocked.</div>
+
+      <div class="grid md:grid-cols-2 gap-4">
     <div class="max-w-6xl mx-auto px-6">
       <div class="max-w-3xl mb-12">
         <div class="label mb-6">Documents</div>
@@ -607,6 +712,10 @@
         </p>
       </div>
       <div class="grid md:grid-cols-2 gap-4">
+        <a href="./investor-memo.html" class="doc-link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Investment Memo
+        </a>
         <a href="https://docs.google.com/document/d/1hL6LlQPLJ9xAqa3iTj3qL-oRLR2v-Y2J/edit?usp=sharing&ouid=116181547337612203909&rtpof=true&sd=true" target="_blank" rel="noopener" class="doc-link">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           Y Combinator Application
@@ -623,30 +732,30 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           Video Scripts
         </a>
-        <div class="doc-link doc-locked">
+        <a href="#" class="doc-link doc-locked">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Pitch Deck — Coming Soon
-        </div>
-        <div class="doc-link doc-locked">
+          <span class="locked-label">Pitch Deck — Locked</span>
+        </a>
+        <a href="#" class="doc-link doc-locked">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          One-Pager — Coming Soon
-        </div>
-        <div class="doc-link doc-locked">
+          <span class="locked-label">One-Pager — Locked</span>
+        </a>
+        <a href="#" class="doc-link doc-locked">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Financial Model — Coming Soon
-        </div>
-        <div class="doc-link doc-locked">
+          <span class="locked-label">Financial Model — Locked</span>
+        </a>
+        <a href="#" class="doc-link doc-locked">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Cap Table — Coming Soon
-        </div>
-        <div class="doc-link doc-locked">
+          <span class="locked-label">Cap Table — Locked</span>
+        </a>
+        <a href="#" class="doc-link doc-locked">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Legal Documents — Coming Soon
-        </div>
-        <div class="doc-link doc-locked">
+          <span class="locked-label">Legal Documents — Locked</span>
+        </a>
+        <a href="#" class="doc-link doc-locked">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          Data Room Index — Coming Soon
-        </div>
+          <span class="locked-label">Data Room Index — Locked</span>
+        </a>
       </div>
     </div>
   </section>
