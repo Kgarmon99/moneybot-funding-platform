@@ -5,8 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MoneyBot — Investor Data Room</title>
   <meta name="description" content="MoneyBot investor data room. Pre-Seed $500K raise. AI-powered financial literacy for kids aged 8-16." />
-  <!-- Analytics: add your Plausible / Google Analytics snippet here -->
+  <!-- Analytics: Plausible (replace data-domain when you add your custom domain) -->
+  <script defer data-domain="kgarmon99.github.io" src="https://plausible.io/js/script.outbound-links.pageview-props.tagged-events.js"></script>
+  <script>
+    window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments); };
+    // Custom event helper that falls back to console in dev
+    function trackEvent(name, props) {
+      try {
+        if (window.plausible) window.plausible(name, { props: props || {} });
+      } catch (e) {}
+      try {
+        if (window.gtag) window.gtag('event', name, props || {});
+      } catch (e) {}
+    }
+  </script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -51,12 +65,8 @@
       background: rgba(0, 230, 118, 0.25);
       color: #ffffff;
     }
-    .section {
-      padding: 120px 0;
-    }
-    @media (max-width: 768px) {
-      .section { padding: 80px 0; }
-    }
+    .section { padding: 120px 0; }
+    @media (max-width: 768px) { .section { padding: 80px 0; } }
     .label {
       display: inline-flex;
       align-items: center;
@@ -107,9 +117,7 @@
       border: 1px solid #1a1a1a;
       transition: border-color 0.2s ease;
     }
-    .card:hover {
-      border-color: #00E676;
-    }
+    .card:hover { border-color: #00E676; }
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -124,10 +132,7 @@
       border-radius: 999px;
       transition: transform 0.15s ease, background 0.15s ease;
     }
-    .btn-primary:hover {
-      background: #00C853;
-      transform: translateY(-1px);
-    }
+    .btn-primary:hover { background: #00C853; transform: translateY(-1px); }
     .btn-outline {
       display: inline-flex;
       align-items: center;
@@ -142,10 +147,7 @@
       border-radius: 999px;
       transition: border-color 0.15s ease, background 0.15s ease;
     }
-    .btn-outline:hover {
-      border-color: #00E676;
-      background: rgba(0, 230, 118, 0.05);
-    }
+    .btn-outline:hover { border-color: #00E676; background: rgba(0, 230, 118, 0.05); }
     .metric-number {
       font-size: clamp(36px, 5vw, 56px);
       font-weight: 800;
@@ -165,9 +167,7 @@
       border-radius: 12px;
       transition: border-color 0.15s ease;
     }
-    .doc-link:hover {
-      border-color: #00E676;
-    }
+    .doc-link:hover { border-color: #00E676; }
     .doc-link svg {
       width: 18px;
       height: 18px;
@@ -192,29 +192,80 @@
       background: #1a1a1a;
       width: 100%;
     }
+    .screenshot-card {
+      overflow: hidden;
+      border-radius: 16px;
+      border: 1px solid #1a1a1a;
+      background: #0a0a0a;
+    }
+    .screenshot-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .screenshot-card:hover img { transform: scale(1.02); }
+    .gate-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.92);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .gate-box {
+      max-width: 420px;
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid #1a1a1a;
+      border-radius: 20px;
+      padding: 32px;
+    }
+    .chart-container { position: relative; height: 320px; }
+    @media (max-width: 768px) { .chart-container { height: 260px; } }
+    .progress-bar { background: #141414; border-radius: 999px; overflow: hidden; height: 8px; }
+    .progress-bar > div { background: #00E676; height: 100%; border-radius: 999px; }
+    .hidden { display: none !important; }
   </style>
 </head>
 <body class="min-h-screen">
 
+  <!-- Email Gate -->
+  <div id="gate-overlay" class="gate-overlay">
+    <div class="gate-box">
+      <div class="label mb-4">Investor Access</div>
+      <h2 class="heading-md mb-3">Enter the data room</h2>
+      <p class="body mb-6">Leave your email to unlock the full data room. We'll send you the investor password and a personalized memo.</p>
+      <form id="gate-form" onsubmit="return handleGateSubmit(event)">
+        <input id="gate-email" type="email" required placeholder="you@fund.com" class="w-full bg-black border border-mb-border rounded-lg px-4 py-3 text-sm text-white focus:outline-none focus:border-mb-green mb-3">
+        <button type="submit" class="btn-primary w-full justify-center">Unlock data room</button>
+      </form>
+      <p class="text-xs text-mb-muted mt-4 text-center">Already have a password? <button onclick="skipGate()" class="text-mb-green underline">Skip to password gate</button></p>
+      <p id="gate-error" class="text-red-500 text-xs mt-3 hidden">Please enter a valid email.</p>
+    </div>
+  </div>
+
   <!-- Nav -->
   <nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-mb-border">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="#" class="flex items-center gap-3">
+      <a href="#" class="flex items-center gap-3" onclick="trackEvent('Nav Logo Click')">
         <div class="w-9 h-9 rounded-lg overflow-hidden border border-mb-border bg-mb-panel">
           <img src="./assets/logo.jpg" alt="MoneyBot" class="w-full h-full object-cover" />
         </div>
         <div class="text-sm font-bold tracking-tight">MoneyBot</div>
       </a>
       <div class="hidden md:flex items-center gap-8">
-        <a href="#opportunity" class="nav-link">Opportunity</a>
-        <a href="#traction" class="nav-link">Traction</a>
-        <a href="#product" class="nav-link">Product</a>
-        <a href="#market" class="nav-link">Market</a>
-        <a href="#team" class="nav-link">Team</a>
-        <a href="./investor-memo.html" class="nav-link">Memo</a>
-        <a href="#documents" class="nav-link">Documents</a>
+        <a href="#opportunity" class="nav-link" onclick="trackEvent('Nav Click', {section:'opportunity'})">Opportunity</a>
+        <a href="#traction" class="nav-link" onclick="trackEvent('Nav Click', {section:'traction'})">Traction</a>
+        <a href="#product" class="nav-link" onclick="trackEvent('Nav Click', {section:'product'})">Product</a>
+        <a href="#market" class="nav-link" onclick="trackEvent('Nav Click', {section:'market'})">Market</a>
+        <a href="#team" class="nav-link" onclick="trackEvent('Nav Click', {section:'team'})">Team</a>
+        <a href="./investor-memo.html" class="nav-link" onclick="trackEvent('Nav Click', {section:'memo'})">Memo</a>
+        <a href="#documents" class="nav-link" onclick="trackEvent('Nav Click', {section:'documents'})">Documents</a>
       </div>
-      <a href="#contact" class="btn-primary !py-2 !px-5 text-xs">Contact</a>
+      <a href="#contact" class="btn-primary !py-2 !px-5 text-xs" onclick="trackEvent('Nav Contact Click')">Contact</a>
     </div>
   </nav>
 
@@ -223,15 +274,13 @@
     <div class="max-w-6xl mx-auto px-6">
       <div class="max-w-3xl">
         <div class="label mb-8">Pre-Seed Data Room</div>
-        <h1 class="heading-xl mb-8">
-          The financial literacy layer for the next generation.
-        </h1>
+        <h1 class="heading-xl mb-8">The financial literacy layer for the next generation.</h1>
         <p class="body-lg mb-10 max-w-2xl">
           MoneyBot is an AI tutor that turns kids aged 8–16 into confident money managers. We meet them on their phones, adapt to how they learn, and give parents the tools they never had.
         </p>
         <div class="flex flex-wrap gap-4 mb-16">
-          <a href="./investor-memo.html" class="btn-primary">Read investment memo</a>
-          <a href="#documents" class="btn-outline">View documents</a>
+          <a href="./investor-memo.html" class="btn-primary" onclick="trackEvent('Hero CTA', {cta:'memo'})">Read investment memo</a>
+          <a href="#documents" class="btn-outline" onclick="trackEvent('Hero CTA', {cta:'documents'})">View documents</a>
         </div>
       </div>
 
@@ -260,25 +309,88 @@
     </div>
   </header>
 
-  <!-- Demo -->
-  <section class="py-16 md:py-24 border-b border-mb-border">
+  <!-- Live Metrics -->
+  <section id="metrics" class="py-16 md:py-24 border-b border-mb-border">
     <div class="max-w-6xl mx-auto px-6">
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="grid lg:grid-cols-3 gap-12">
+        <div class="lg:col-span-1">
+          <div class="label mb-6">Live Metrics</div>
+          <h2 class="heading-lg mb-4">Growth, not promises.</h2>
+          <p class="body-lg mb-6">
+            Weekly active users and signups since launch. Numbers update weekly from our product database.
+          </p>
+          <div class="space-y-4">
+            <div class="flex justify-between text-sm">
+              <span class="text-mb-muted">Current WAU</span>
+              <span class="font-bold">200+</span>
+            </div>
+            <div class="progress-bar"><div style="width: 40%"></div></div>
+            <div class="flex justify-between text-sm">
+              <span class="text-mb-muted">Signups</span>
+              <span class="font-bold">[FILL: total signups]</span>
+            </div>
+            <div class="progress-bar"><div style="width: 35%"></div></div>
+            <div class="flex justify-between text-sm">
+              <span class="text-mb-muted">Retention (W4)</span>
+              <span class="font-bold">[FILL: retention %]</span>
+            </div>
+            <div class="progress-bar"><div style="width: 60%"></div></div>
+          </div>
+          <p class="text-xs text-mb-muted mt-6">Replace chart data in <code>./assets/js/room.js</code> with your real weekly CSV export.</p>
+        </div>
+        <div class="lg:col-span-2 card rounded-2xl p-4 md:p-6">
+          <div class="chart-container">
+            <canvas id="wauChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo + Interactive -->
+  <section id="demo" class="py-16 md:py-24 border-b border-mb-border">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-12 items-start">
         <div>
           <div class="label mb-6">Product Demo</div>
           <h2 class="heading-lg mb-6">See MoneyBot in action.</h2>
-          <p class="body-lg">
-            A 60-second walkthrough of how kids use the AI tutor, complete quests, and build real financial habits — and how parents track progress.
+          <p class="body-lg mb-6">
+            A 60–90 second walkthrough of how kids use the AI tutor, complete quests, and build real financial habits — and how parents track progress.
           </p>
-        </div>
-        <div class="card rounded-2xl p-3 aspect-video flex items-center justify-center relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-br from-mb-green/5 to-transparent"></div>
-          <div class="text-center relative z-10">
-            <div class="w-16 h-16 rounded-full border border-mb-green/30 bg-mb-green/10 flex items-center justify-center mx-auto mb-4">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-mb-green ml-1"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <div class="card rounded-2xl p-3 aspect-video flex items-center justify-center relative overflow-hidden mb-6">
+            <div class="absolute inset-0 bg-gradient-to-br from-mb-green/5 to-transparent"></div>
+            <div class="text-center relative z-10">
+              <div class="w-16 h-16 rounded-full border border-mb-green/30 bg-mb-green/10 flex items-center justify-center mx-auto mb-4 cursor-pointer hover:bg-mb-green/20 transition" onclick="trackEvent('Demo Play Click')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="text-mb-green ml-1"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              </div>
+              <div class="text-sm font-semibold text-white mb-1">Demo video</div>
+              <div class="text-xs text-mb-muted">Replace with your .mp4 embed</div>
             </div>
-            <div class="text-sm font-semibold text-white mb-1">Demo video</div>
-            <div class="text-xs text-mb-muted">Upload your .mp4 to deploy</div>
+          </div>
+          <p class="text-xs text-mb-muted">Tip: Upload the video to YouTube/Vimeo unlisted, then embed the iframe here.</p>
+        </div>
+        <div>
+          <div class="label mb-6">Try It</div>
+          <h2 class="heading-lg mb-6">Text with MoneyBot.</h2>
+          <p class="body-lg mb-6">Experience the tutor with a pre-built scenario. This is a static preview — wire it to your API for a real interaction.</p>
+          <div class="card rounded-2xl p-4 h-[420px] flex flex-col">
+            <div class="flex-1 overflow-y-auto space-y-3 mb-4 pr-1" id="chat-preview">
+              <div class="flex gap-3">
+                <div class="w-8 h-8 rounded-full bg-mb-green/20 flex items-center justify-center flex-shrink-0 text-xs font-bold">MB</div>
+                <div class="bg-mb-panel border border-mb-border rounded-2xl rounded-tl-none px-4 py-3 text-sm">Hey! I'm MoneyBot. Want to learn how saving $5 a week turns into real money?</div>
+              </div>
+              <div class="flex gap-3 justify-end">
+                <div class="bg-mb-green text-black rounded-2xl rounded-tr-none px-4 py-3 text-sm font-medium">Yes, show me.</div>
+              </div>
+              <div class="flex gap-3">
+                <div class="w-8 h-8 rounded-full bg-mb-green/20 flex items-center justify-center flex-shrink-0 text-xs font-bold">MB</div>
+                <div class="bg-mb-panel border border-mb-border rounded-2xl rounded-tl-none px-4 py-3 text-sm">If you save $5/week from age 10 to 18 in an index fund averaging 8%, you'd have about <strong>$2,800</strong>. Not bad for skipping one snack a week.</div>
+              </div>
+            </div>
+            <div class="flex gap-2 mt-auto">
+              <input type="text" placeholder="Ask MoneyBot anything..." class="flex-1 bg-black border border-mb-border rounded-full px-4 py-2.5 text-sm focus:outline-none focus:border-mb-green">
+              <button class="btn-primary !py-2.5 !px-4" onclick="trackEvent('Interactive Demo Send')">Send</button>
+            </div>
           </div>
         </div>
       </div>
@@ -350,6 +462,73 @@
     </div>
   </section>
 
+  <!-- Product Gallery -->
+  <section id="product" class="section border-b border-mb-border">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-3xl mb-12">
+        <div class="label mb-6">Product Gallery</div>
+        <h2 class="heading-lg mb-6">Built for how kids actually learn.</h2>
+        <p class="body-lg">
+          Kids don't want another classroom. MoneyBot feels like texting a smart friend. It explains compound interest, budgeting, and investing through examples they care about.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="screenshot-card">
+          <img src="./assets/screenshots/testimonials-crop.png" alt="MoneyBot testimonials screen" />
+          <div class="p-4 border-t border-mb-border">
+            <div class="text-sm font-semibold">Student Home</div>
+            <div class="text-xs text-mb-muted">Personalized feed & progress</div>
+          </div>
+        </div>
+        <div class="screenshot-card">
+          <div class="aspect-[4/3] bg-mb-panel flex items-center justify-center">
+            <span class="text-xs text-mb-muted">[Upload chat screenshot]</span>
+          </div>
+          <div class="p-4 border-t border-mb-border">
+            <div class="text-sm font-semibold">AI Tutor Chat</div>
+            <div class="text-xs text-mb-muted">Adaptive Q&A</div>
+          </div>
+        </div>
+        <div class="screenshot-card">
+          <div class="aspect-[4/3] bg-mb-panel flex items-center justify-center">
+            <span class="text-xs text-mb-muted">[Upload quest screenshot]</span>
+          </div>
+          <div class="p-4 border-t border-mb-border">
+            <div class="text-sm font-semibold">Quests</div>
+            <div class="text-xs text-mb-muted">Gamified challenges</div>
+          </div>
+        </div>
+        <div class="screenshot-card">
+          <div class="aspect-[4/3] bg-mb-panel flex items-center justify-center">
+            <span class="text-xs text-mb-muted">[Upload parent dashboard]</span>
+          </div>
+          <div class="p-4 border-t border-mb-border">
+            <div class="text-sm font-semibold">Parent Dashboard</div>
+            <div class="text-xs text-mb-muted">Insights & prompts</div>
+          </div>
+        </div>
+        <div class="screenshot-card">
+          <div class="aspect-[4/3] bg-mb-panel flex items-center justify-center">
+            <span class="text-xs text-mb-muted">[Upload lesson screen]</span>
+          </div>
+          <div class="p-4 border-t border-mb-border">
+            <div class="text-sm font-semibold">Micro-Lessons</div>
+            <div class="text-xs text-mb-muted">Bite-sized concepts</div>
+          </div>
+        </div>
+        <div class="screenshot-card">
+          <div class="aspect-[4/3] bg-mb-panel flex items-center justify-center">
+            <span class="text-xs text-mb-muted">[Upload rewards screen]</span>
+          </div>
+          <div class="p-4 border-t border-mb-border">
+            <div class="text-sm font-semibold">Rewards & Streaks</div>
+            <div class="text-xs text-mb-muted">Habit formation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Traction -->
   <section id="traction" class="section border-b border-mb-border">
     <div class="max-w-6xl mx-auto px-6">
@@ -403,6 +582,120 @@
           </div>
         </div>
       </div>
+
+      <!-- Named Traction -->
+      <div class="mt-16">
+        <div class="label mb-6">Trusted By</div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="card p-5 rounded-xl flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-mb-green/10 flex items-center justify-center text-mb-green font-bold text-sm">1</div>
+            <div>
+              <div class="font-semibold text-sm">[School Name]</div>
+              <div class="text-xs text-mb-muted">[City, State]</div>
+            </div>
+          </div>
+          <div class="card p-5 rounded-xl flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-mb-green/10 flex items-center justify-center text-mb-green font-bold text-sm">2</div>
+            <div>
+              <div class="font-semibold text-sm">[School Name]</div>
+              <div class="text-xs text-mb-muted">[City, State]</div>
+            </div>
+          </div>
+          <div class="card p-5 rounded-xl flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-mb-green/10 flex items-center justify-center text-mb-green font-bold text-sm">3</div>
+            <div>
+              <div class="font-semibold text-sm">[School Name]</div>
+              <div class="text-xs text-mb-muted">[City, State]</div>
+            </div>
+          </div>
+          <div class="card p-5 rounded-xl flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-mb-green/10 flex items-center justify-center text-mb-green font-bold text-sm">4</div>
+            <div>
+              <div class="font-semibold text-sm">[School Name]</div>
+              <div class="text-xs text-mb-muted">[City, State]</div>
+            </div>
+          </div>
+          <div class="card p-5 rounded-xl flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-mb-green/10 flex items-center justify-center text-mb-green font-bold text-sm">5</div>
+            <div>
+              <div class="font-semibold text-sm">[School Name]</div>
+              <div class="text-xs text-mb-muted">[City, State]</div>
+            </div>
+          </div>
+          <div class="card p-5 rounded-xl flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-mb-green/10 flex items-center justify-center text-mb-green font-bold text-sm">6</div>
+            <div>
+              <div class="font-semibold text-sm">[School Name]</div>
+              <div class="text-xs text-mb-muted">[City, State]</div>
+            </div>
+          </div>
+          <div class="card p-5 rounded-xl flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-mb-green/10 flex items-center justify-center text-mb-green font-bold text-sm">7</div>
+            <div>
+              <div class="font-semibold text-sm">[School Name]</div>
+              <div class="text-xs text-mb-muted">[City, State]</div>
+            </div>
+          </div>
+          <div class="card p-5 rounded-xl flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-mb-green/10 flex items-center justify-center text-mb-green font-bold text-sm">8</div>
+            <div>
+              <div class="font-semibold text-sm">[School Name]</div>
+              <div class="text-xs text-mb-muted">[City, State]</div>
+            </div>
+          </div>
+          <div class="card p-5 rounded-xl flex items-center gap-4">
+            <div class="w-10 h-10 rounded-full bg-mb-green/10 flex items-center justify-center text-mb-green font-bold text-sm">9</div>
+            <div>
+              <div class="font-semibold text-sm">[School Name]</div>
+              <div class="text-xs text-mb-muted">[City, State]</div>
+            </div>
+          </div>
+          <div class="card p-5 rounded-xl flex items-center gap-4 md:col-span-2 lg:col-span-1">
+            <div class="w-10 h-10 rounded-full bg-mb-green/10 flex items-center justify-center text-mb-green font-bold text-sm">10</div>
+            <div>
+              <div class="font-semibold text-sm">[School Name]</div>
+              <div class="text-xs text-mb-muted">[City, State]</div>
+            </div>
+          </div>
+        </div>
+        <p class="text-xs text-mb-muted mt-4">Replace placeholders with school names + permission to use their logos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Unit Economics -->
+  <section id="unit-economics" class="section border-b border-mb-border">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-3xl mb-12">
+        <div class="label mb-6">Unit Economics</div>
+        <h2 class="heading-lg mb-6">Even early, the math works.</h2>
+        <p class="body-lg">
+          Organic acquisition through educators keeps CAC low. As we convert free pilots to paid subscriptions, payback is measured in weeks, not years.
+        </p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="card p-6 rounded-xl">
+          <div class="text-mb-muted text-xs font-bold uppercase tracking-wider mb-3">CAC</div>
+          <div class="text-3xl font-extrabold mb-2">$[FILL]</div>
+          <p class="text-sm text-mb-muted">Estimated blended customer acquisition cost</p>
+        </div>
+        <div class="card p-6 rounded-xl">
+          <div class="text-mb-muted text-xs font-bold uppercase tracking-wider mb-3">LTV</div>
+          <div class="text-3xl font-extrabold mb-2">$[FILL]</div>
+          <p class="text-sm text-mb-muted">Estimated lifetime value per family</p>
+        </div>
+        <div class="card p-6 rounded-xl">
+          <div class="text-mb-muted text-xs font-bold uppercase tracking-wider mb-3">LTV/CAC</div>
+          <div class="text-3xl font-extrabold mb-2">[FILL]x</div>
+          <p class="text-sm text-mb-muted">Target >3x at scale</p>
+        </div>
+        <div class="card p-6 rounded-xl">
+          <div class="text-mb-muted text-xs font-bold uppercase tracking-wider mb-3">Payback</div>
+          <div class="text-3xl font-extrabold mb-2">&lt;30 days</div>
+          <p class="text-sm text-mb-muted">Based on organic pilot-to-parent conversion</p>
+        </div>
+      </div>
+      <p class="text-xs text-mb-muted mt-6">Assumptions: $9.99/mo subscription, [FILL]% monthly churn, [FILL]% pilot-to-paid conversion. Confirm with cfo-bot.</p>
     </div>
   </section>
 
@@ -420,8 +713,8 @@
             "MoneyBot is the first tool my students actually want to use. They're having real conversations about saving and investing at age 12."
           </p>
           <div>
-            <div class="font-bold text-sm">Pilot Educator</div>
-            <div class="text-mb-muted text-xs">Kentucky middle school</div>
+            <div class="font-bold text-sm">[Teacher Name]</div>
+            <div class="text-mb-muted text-xs">[School, City]</div>
           </div>
         </div>
         <div class="card p-8 rounded-2xl">
@@ -430,8 +723,8 @@
             "I finally have a way to talk to my daughter about money without it feeling like a lecture. She teaches me things now."
           </p>
           <div>
-            <div class="font-bold text-sm">Parent of MoneyBot user</div>
-            <div class="text-mb-muted text-xs">Bowling Green, KY</div>
+            <div class="font-bold text-sm">[Parent Name]</div>
+            <div class="text-mb-muted text-xs">[City, State]</div>
           </div>
         </div>
       </div>
@@ -441,47 +734,7 @@
           <div class="font-bold">Louisville Business First</div>
           <div class="text-sm text-mb-muted">"MoneyBot founder Kahlil Garmon launches financial literacy startup"</div>
         </div>
-        <a href="#" class="btn-outline !py-2.5 !px-5 text-xs">Read article</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Product -->
-  <section id="product" class="section border-b border-mb-border">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="grid lg:grid-cols-2 gap-16 items-center">
-        <div>
-          <div class="label mb-6">Product</div>
-          <h2 class="heading-lg mb-6">Built for how kids actually learn.</h2>
-          <p class="body-lg mb-8">
-            Kids don't want another classroom. MoneyBot feels like texting a smart friend. It explains compound interest, budgeting, and investing through examples they care about.
-          </p>
-          <div class="space-y-4">
-            <div class="flex items-start gap-4">
-              <div class="w-6 h-6 rounded-full bg-mb-green flex items-center justify-center flex-shrink-0 mt-0.5">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <p class="text-sm text-neutral-300">Personalized AI conversations that adapt to age and skill level</p>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-6 h-6 rounded-full bg-mb-green flex items-center justify-center flex-shrink-0 mt-0.5">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <p class="text-sm text-neutral-300">Quests and challenges tied to real-world financial decisions</p>
-            </div>
-            <div class="flex items-start gap-4">
-              <div class="w-6 h-6 rounded-full bg-mb-green flex items-center justify-center flex-shrink-0 mt-0.5">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-              </div>
-              <p class="text-sm text-neutral-300">Progress tracking and insights for parents and educators</p>
-            </div>
-          </div>
-        </div>
-        <div class="card rounded-3xl p-3">
-          <div class="rounded-2xl overflow-hidden border border-mb-border">
-            <img src="./assets/screenshots/testimonials-crop.png" alt="MoneyBot product showing testimonials" class="w-full h-auto" />
-          </div>
-        </div>
+        <a href="[FILL: article URL]" target="_blank" rel="noopener" class="btn-outline !py-2.5 !px-5 text-xs" onclick="trackEvent('Press Click', {outlet:'Louisville Business First'})">Read article</a>
       </div>
     </div>
   </section>
@@ -585,44 +838,48 @@
       </div>
       <div class="space-y-4">
         <div class="card p-6 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-4 flex-1">
             <div class="text-xl font-extrabold text-mb-green w-16">45%</div>
-            <div>
+            <div class="flex-1">
               <div class="font-bold">Product & Engineering</div>
               <div class="text-sm text-mb-muted">AI tutor improvements, curriculum expansion, mobile apps</div>
             </div>
           </div>
-          <div class="text-sm font-semibold text-mb-muted">$225K</div>
+          <div class="w-full md:w-48 progress-bar"><div style="width: 45%"></div></div>
+          <div class="text-sm font-semibold text-mb-muted w-16 text-right">$225K</div>
         </div>
         <div class="card p-6 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-4 flex-1">
             <div class="text-xl font-extrabold text-mb-green w-16">30%</div>
-            <div>
+            <div class="flex-1">
               <div class="font-bold">Growth & Partnerships</div>
               <div class="text-sm text-mb-muted">School pilots, educator outreach, parent marketing</div>
             </div>
           </div>
-          <div class="text-sm font-semibold text-mb-muted">$150K</div>
+          <div class="w-full md:w-48 progress-bar"><div style="width: 30%"></div></div>
+          <div class="text-sm font-semibold text-mb-muted w-16 text-right">$150K</div>
         </div>
         <div class="card p-6 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-4 flex-1">
             <div class="text-xl font-extrabold text-mb-green w-16">15%</div>
-            <div>
+            <div class="flex-1">
               <div class="font-bold">Operations</div>
               <div class="text-sm text-mb-muted">Legal, compliance, finance, customer success</div>
             </div>
           </div>
-          <div class="text-sm font-semibold text-mb-muted">$75K</div>
+          <div class="w-full md:w-48 progress-bar"><div style="width: 15%"></div></div>
+          <div class="text-sm font-semibold text-mb-muted w-16 text-right">$75K</div>
         </div>
         <div class="card p-6 rounded-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-4 flex-1">
             <div class="text-xl font-extrabold text-mb-green w-16">10%</div>
-            <div>
+            <div class="flex-1">
               <div class="font-bold">Reserve</div>
               <div class="text-sm text-mb-muted">Opportunities and contingencies</div>
             </div>
           </div>
-          <div class="text-sm font-semibold text-mb-muted">$50K</div>
+          <div class="w-full md:w-48 progress-bar"><div style="width: 10%"></div></div>
+          <div class="text-sm font-semibold text-mb-muted w-16 text-right">$50K</div>
         </div>
       </div>
     </div>
@@ -658,30 +915,133 @@
               </p>
             </div>
           </div>
+          <div class="mt-6 pt-6 border-t border-mb-border">
+            <div class="text-xs text-mb-muted uppercase font-bold tracking-wider mb-3">We're hiring</div>
+            <div class="flex flex-wrap gap-2">
+              <span class="px-3 py-1.5 rounded-full border border-mb-border text-xs font-semibold text-mb-muted">Founding Engineer</span>
+              <span class="px-3 py-1.5 rounded-full border border-mb-border text-xs font-semibold text-mb-muted">Head of Growth</span>
+              <span class="px-3 py-1.5 rounded-full border border-mb-border text-xs font-semibold text-mb-muted">Curriculum Lead</span>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Competition -->
+  <section id="competition" class="section border-b border-mb-border">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-3xl mb-12">
+        <div class="label mb-6">Competition</div>
+        <h2 class="heading-lg mb-6">Why MoneyBot wins.</h2>
+        <p class="body-lg">
+          Existing solutions are either curriculum-heavy, expensive, or not built for how kids actually communicate. MoneyBot is the first AI-native, phone-first, parent-connected product in the space.
+        </p>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm border-collapse">
+          <thead>
+            <tr class="border-b border-mb-border text-mb-muted">
+              <th class="py-4 pr-4 font-bold">Capability</th>
+              <th class="py-4 px-4 font-bold text-mb-green">MoneyBot</th>
+              <th class="py-4 px-4 font-bold">Traditional Edtech</th>
+              <th class="py-4 px-4 font-bold">Consumer Fintech</th>
+              <th class="py-4 px-4 font-bold">YouTube/TikTok</th>
+            </tr>
+          </thead>
+          <tbody class="text-mb-muted">
+            <tr class="border-b border-mb-border/50">
+              <td class="py-4 pr-4 font-semibold text-white">AI personalization</td>
+              <td class="py-4 px-4 text-mb-green font-bold">✓ Native</td>
+              <td class="py-4 px-4">✗ Limited</td>
+              <td class="py-4 px-4">△ Generic</td>
+              <td class="py-4 px-4">✗ None</td>
+            </tr>
+            <tr class="border-b border-mb-border/50">
+              <td class="py-4 pr-4 font-semibold text-white">Phone-first</td>
+              <td class="py-4 px-4 text-mb-green font-bold">✓ Yes</td>
+              <td class="py-4 px-4">✗ Classroom/web</td>
+              <td class="py-4 px-4">✓ Yes</td>
+              <td class="py-4 px-4">✓ Yes</td>
+            </tr>
+            <tr class="border-b border-mb-border/50">
+              <td class="py-4 pr-4 font-semibold text-white">Parent connection</td>
+              <td class="py-4 px-4 text-mb-green font-bold">✓ Built-in</td>
+              <td class="py-4 px-4">△ Reports</td>
+              <td class="py-4 px-4">△ Some</td>
+              <td class="py-4 px-4">✗ None</td>
+            </tr>
+            <tr class="border-b border-mb-border/50">
+              <td class="py-4 pr-4 font-semibold text-white">Curriculum depth</td>
+              <td class="py-4 px-4 text-mb-green font-bold">✓ Adaptive</td>
+              <td class="py-4 px-4">✓ Fixed</td>
+              <td class="py-4 px-4">△ Basic</td>
+              <td class="py-4 px-4">✗ Unstructured</td>
+            </tr>
+            <tr class="border-b border-mb-border/50">
+              <td class="py-4 pr-4 font-semibold text-white">Price per family</td>
+              <td class="py-4 px-4 text-mb-green font-bold">$9.99/mo</td>
+              <td class="py-4 px-4">$50–200/yr</td>
+              <td class="py-4 px-4">Free–$10/mo</td>
+              <td class="py-4 px-4">Free (ad-supported)</td>
+            </tr>
+            <tr>
+              <td class="py-4 pr-4 font-semibold text-white">COPPA compliance</td>
+              <td class="py-4 px-4 text-mb-green font-bold">✓ From day one</td>
+              <td class="py-4 px-4">✓ Yes</td>
+              <td class="py-4 px-4">△ Varies</td>
+              <td class="py-4 px-4">✗ No</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-8 text-center">
+        <a href="./competition.html" class="btn-outline !py-2.5 !px-5 text-xs" onclick="trackEvent('Competition Detail Click')">View full competitive analysis</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section border-b border-mb-border">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-3xl mb-12">
+        <div class="label mb-6">FAQ</div>
+        <h2 class="heading-lg mb-6">What investors ask us.</h2>
+      </div>
+      <div class="grid md:grid-cols-2 gap-6">
+        <div class="card p-6 rounded-xl">
+          <h4 class="font-bold mb-2">What makes MoneyBot different from Khan Academy or Greenlight?</h4>
+          <p class="body text-sm">We're AI-native and conversation-first. Kids learn by asking questions, not watching videos. We also connect parents to the learning loop in a way fintech apps don't.</p>
+        </div>
+        <div class="card p-6 rounded-xl">
+          <h4 class="font-bold mb-2">How do you acquire customers?</h4>
+          <p class="body text-sm">Free school pilots create teacher champions. Students use MoneyBot in class, then bring it home. Parents convert to paid subscriptions.</p>
+        </div>
+        <div class="card p-6 rounded-xl">
+          <h4 class="font-bold mb-2">What is the path to revenue?</h4>
+          <p class="body text-sm">B2C subscriptions launch first. School district licenses and employer-sponsored family benefits follow once we have measurable usage and outcomes.</p>
+        </div>
+        <div class="card p-6 rounded-xl">
+          <h4 class="font-bold mb-2">How do you keep kids safe?</h4>
+          <p class="body text-sm">COPPA-compliant from day one. No ads, no data selling, age-gated conversations, and parent-managed accounts.</p>
+        </div>
+        <div class="card p-6 rounded-xl">
+          <h4 class="font-bold mb-2">What does the $500K get you?</h4>
+          <p class="body text-sm">18–24 months of runway to reach [FILL: target metric, e.g., 1,000 paid families or 50 schools], validate unit economics, and raise a Seed round.</p>
+        </div>
+        <div class="card p-6 rounded-xl">
+          <h4 class="font-bold mb-2">Who else is in the round?</h4>
+          <p class="body text-sm">[FILL: $90K committed from angels/family offices. Mention names only with permission.]</p>
+        </div>
+      </div>
+      <div class="mt-8 text-center">
+        <a href="./faq.html" class="btn-outline !py-2.5 !px-5 text-xs" onclick="trackEvent('FAQ Full Click')">View all FAQs</a>
       </div>
     </div>
   </section>
 
   <!-- Documents -->
   <section id="documents" class="section border-b border-mb-border">
-    <script>
-      function unlockDocs() {
-        const pw = document.getElementById('doc-password').value;
-        if (pw === 'moneybot2026') {
-          document.querySelectorAll('.doc-locked').forEach(el => {
-            el.classList.remove('doc-locked');
-            el.querySelector('svg').style.color = '#00E676';
-            const span = el.querySelector('.locked-label');
-            if (span) span.textContent = 'Download';
-          });
-          document.getElementById('doc-gate').style.display = 'none';
-          document.getElementById('doc-unlocked').style.display = 'block';
-        } else {
-          document.getElementById('pw-error').style.display = 'block';
-        }
-      }
-    </script>
     <div class="max-w-6xl mx-auto px-6">
       <div class="max-w-3xl mb-12">
         <div class="label mb-6">Documents</div>
@@ -703,59 +1063,81 @@
       <div id="doc-unlocked" class="hidden text-mb-green text-sm font-semibold mb-10">Sensitive documents unlocked.</div>
 
       <div class="grid md:grid-cols-2 gap-4">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="max-w-3xl mb-12">
-        <div class="label mb-6">Documents</div>
-        <h2 class="heading-lg mb-6">Due diligence materials.</h2>
-        <p class="body-lg">
-          Live links to application materials and investor resources. Locked items will be replaced as diligence progresses.
-        </p>
-      </div>
-      <div class="grid md:grid-cols-2 gap-4">
-        <a href="./investor-memo.html" class="doc-link">
+        <a href="./investor-memo.html" class="doc-link" onclick="trackEvent('Doc Download', {doc:'investment-memo'})">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           Investment Memo
         </a>
-        <a href="https://docs.google.com/document/d/1hL6LlQPLJ9xAqa3iTj3qL-oRLR2v-Y2J/edit?usp=sharing&ouid=116181547337612203909&rtpof=true&sd=true" target="_blank" rel="noopener" class="doc-link">
+        <a href="./pitch-deck.html" class="doc-link" onclick="trackEvent('Doc Download', {doc:'pitch-deck'})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          Interactive Pitch Deck
+        </a>
+        <a href="https://docs.google.com/document/d/1hL6LlQPLJ9xAqa3iTj3qL-oRLR2v-Y2J/edit?usp=sharing&ouid=116181547337612203909&rtpof=true&sd=true" target="_blank" rel="noopener" class="doc-link" onclick="trackEvent('Doc Download', {doc:'yc-application'})">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           Y Combinator Application
         </a>
-        <a href="https://docs.google.com/document/d/1EK5z3T-0r-Pj5jMR-pbvL4o8UPcHK-Lu/edit?usp=sharing&ouid=116181547337612203909&rtpof=true&sd=true" target="_blank" rel="noopener" class="doc-link">
+        <a href="https://docs.google.com/document/d/1EK5z3T-0r-Pj5jMR-pbvL4o8UPcHK-Lu/edit?usp=sharing&ouid=116181547337612203909&rtpof=true&sd=true" target="_blank" rel="noopener" class="doc-link" onclick="trackEvent('Doc Download', {doc:'learnlaunch-application'})">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           LearnLaunch Application
         </a>
-        <a href="https://docs.google.com/document/d/1v1TzQgk4VWb2cqvBbEJMAn3z9tEJ5kX3/edit?usp=sharing&ouid=116181547337612203909&rtpof=true&sd=true" target="_blank" rel="noopener" class="doc-link">
+        <a href="https://docs.google.com/document/d/1v1TzQgk4VWb2cqvBbEJMAn3z9tEJ5kX3/edit?usp=sharing&ouid=116181547337612203909&rtpof=true&sd=true" target="_blank" rel="noopener" class="doc-link" onclick="trackEvent('Doc Download', {doc:'spc-application'})">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           South Park Commons Application
         </a>
-        <a href="https://docs.google.com/document/d/1RmLpdVr3XE3p3M7EJ1c7qI-F8vHnZ0kN/edit?usp=sharing&ouid=116181547337612203909&rtpof=true&sd=true" target="_blank" rel="noopener" class="doc-link">
+        <a href="https://docs.google.com/document/d/1RmLpdVr3XE3p3M7EJ1c7qI-F8vHnZ0kN/edit?usp=sharing&ouid=116181547337612203909&rtpof=true&sd=true" target="_blank" rel="noopener" class="doc-link" onclick="trackEvent('Doc Download', {doc:'video-scripts'})">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
           Video Scripts
         </a>
-        <a href="#" class="doc-link doc-locked">
+        <a href="[FILL: pitch deck PDF URL]" target="_blank" rel="noopener" class="doc-link doc-locked" data-doc="pitch-deck-pdf">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span class="locked-label">Pitch Deck — Locked</span>
+          <span class="locked-label">Pitch Deck PDF — Locked</span>
         </a>
-        <a href="#" class="doc-link doc-locked">
+        <a href="[FILL: one-pager PDF URL]" target="_blank" rel="noopener" class="doc-link doc-locked" data-doc="one-pager">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <span class="locked-label">One-Pager — Locked</span>
         </a>
-        <a href="#" class="doc-link doc-locked">
+        <a href="[FILL: financial model URL]" target="_blank" rel="noopener" class="doc-link doc-locked" data-doc="financial-model">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <span class="locked-label">Financial Model — Locked</span>
         </a>
-        <a href="#" class="doc-link doc-locked">
+        <a href="[FILL: cap table URL]" target="_blank" rel="noopener" class="doc-link doc-locked" data-doc="cap-table">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <span class="locked-label">Cap Table — Locked</span>
         </a>
-        <a href="#" class="doc-link doc-locked">
+        <a href="[FILL: legal docs URL]" target="_blank" rel="noopener" class="doc-link doc-locked" data-doc="legal">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
           <span class="locked-label">Legal Documents — Locked</span>
         </a>
-        <a href="#" class="doc-link doc-locked">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span class="locked-label">Data Room Index — Locked</span>
+        <a href="./data-room-index.html" class="doc-link" onclick="trackEvent('Doc Download', {doc:'data-room-index'})">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+          Data Room Index
         </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Press -->
+  <section id="press" class="section border-b border-mb-border">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="max-w-3xl mb-12">
+        <div class="label mb-6">Press & PR</div>
+        <h2 class="heading-lg mb-6">What people are saying.</h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="card p-6 rounded-xl">
+          <div class="text-mb-muted text-xs font-bold uppercase tracking-wider mb-3">Louisville Business First</div>
+          <p class="text-sm mb-4">"MoneyBot founder Kahlil Garmon launches financial literacy startup"</p>
+          <a href="[FILL: URL]" target="_blank" rel="noopener" class="text-mb-green text-sm font-semibold hover:underline" onclick="trackEvent('Press Click', {outlet:'Louisville Business First'})">Read →</a>
+        </div>
+        <div class="card p-6 rounded-xl">
+          <div class="text-mb-muted text-xs font-bold uppercase tracking-wider mb-3">[Outlet Name]</div>
+          <p class="text-sm mb-4">[FILL: headline or coverage summary]</p>
+          <a href="[FILL: URL]" target="_blank" rel="noopener" class="text-mb-green text-sm font-semibold hover:underline" onclick="trackEvent('Press Click', {outlet:'[Outlet]'})">Read →</a>
+        </div>
+        <div class="card p-6 rounded-xl">
+          <div class="text-mb-muted text-xs font-bold uppercase tracking-wider mb-3">[Outlet Name]</div>
+          <p class="text-sm mb-4">[FILL: headline or coverage summary]</p>
+          <a href="[FILL: URL]" target="_blank" rel="noopener" class="text-mb-green text-sm font-semibold hover:underline" onclick="trackEvent('Press Click', {outlet:'[Outlet]'})">Read →</a>
+        </div>
       </div>
     </div>
   </section>
@@ -769,8 +1151,8 @@
         We're actively meeting with investors and operators who care about financial literacy, AI education, and building category-defining products.
       </p>
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="mailto:kahlil@getmoneybot.com" class="btn-primary w-full sm:w-auto">Email kahlil@getmoneybot.com</a>
-        <a href="https://calendly.com/kahlilgarmon" target="_blank" rel="noopener" class="btn-outline w-full sm:w-auto">Schedule a call</a>
+        <a href="mailto:kahlil@getmoneybot.com" class="btn-primary w-full sm:w-auto" onclick="trackEvent('Contact Click', {type:'email'})">Email kahlil@getmoneybot.com</a>
+        <a href="https://calendly.com/kahlilgarmon" target="_blank" rel="noopener" class="btn-outline w-full sm:w-auto" onclick="trackEvent('Contact Click', {type:'calendly'})">Schedule a call</a>
       </div>
     </div>
   </section>
@@ -788,5 +1170,104 @@
     </div>
   </footer>
 
+  <script>
+    // Gate logic
+    function handleGateSubmit(e) {
+      e.preventDefault();
+      const email = document.getElementById('gate-email').value;
+      if (!email || !email.includes('@')) {
+        document.getElementById('gate-error').classList.remove('hidden');
+        return false;
+      }
+      localStorage.setItem('mb_investor_email', email);
+      trackEvent('Data Room Email Capture', { email_domain: email.split('@')[1] });
+      document.getElementById('gate-overlay').classList.add('hidden');
+      return false;
+    }
+    function skipGate() {
+      document.getElementById('gate-overlay').classList.add('hidden');
+      trackEvent('Data Room Skip Gate');
+    }
+    if (localStorage.getItem('mb_investor_email')) {
+      document.getElementById('gate-overlay').classList.add('hidden');
+    }
+
+    // Password doc unlock
+    function unlockDocs() {
+      const pw = document.getElementById('doc-password').value;
+      if (pw === 'moneybot2026') {
+        document.querySelectorAll('.doc-locked').forEach(el => {
+          el.classList.remove('doc-locked');
+          const svg = el.querySelector('svg');
+          if (svg) svg.style.color = '#00E676';
+          const span = el.querySelector('.locked-label');
+          if (span) span.textContent = span.textContent.replace('— Locked', '— Download');
+        });
+        document.getElementById('doc-gate').style.display = 'none';
+        document.getElementById('doc-unlocked').classList.remove('hidden');
+        trackEvent('Documents Unlocked');
+      } else {
+        document.getElementById('pw-error').classList.remove('hidden');
+        trackEvent('Documents Unlock Failed');
+      }
+    }
+
+    // Chart
+    document.addEventListener('DOMContentLoaded', function() {
+      const ctx = document.getElementById('wauChart');
+      if (!ctx) return;
+      new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: ['Jan W1','Jan W2','Jan W3','Jan W4','Feb W1','Feb W2','Feb W3','Feb W4','Mar W1','Mar W2','Mar W3','Mar W4','Apr W1','Apr W2','Apr W3','Apr W4','May W1','May W2','May W3','May W4','Jun W1','Jun W2','Jun W3','Jun W4'],
+          datasets: [{
+            label: 'Weekly Active Users',
+            data: [12,18,25,34,42,51,63,78,92,110,128,145,162,178,195,210,225,240,255,268,282,295,310,325],
+            borderColor: '#00E676',
+            backgroundColor: 'rgba(0,230,118,0.08)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4,
+            pointRadius: 0,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          interaction: { intersect: false, mode: 'index' },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0a0a0a',
+              titleColor: '#737373',
+              bodyColor: '#ffffff',
+              borderColor: '#1a1a1a',
+              borderWidth: 1,
+              padding: 12
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: '#141414' },
+              ticks: { color: '#737373', font: { size: 10 }, maxTicksLimit: 8 }
+            },
+            y: {
+              grid: { color: '#141414' },
+              ticks: { color: '#737373', font: { size: 10 } },
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    });
+
+    // Track time on page
+    let startTime = Date.now();
+    window.addEventListener('beforeunload', function() {
+      const seconds = Math.round((Date.now() - startTime) / 1000);
+      trackEvent('Data Room Time on Page', { seconds: seconds });
+    });
+  </script>
 </body>
 </html>

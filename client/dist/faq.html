@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MoneyBot — Investor FAQ</title>
+  <meta name="description" content="Frequently asked questions about investing in MoneyBot." />
+  <script defer data-domain="kgarmon99.github.io" src="https://plausible.io/js/script.outbound-links.pageview-props.tagged-events.js"></script>
+  <script>window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments);};</script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', system-ui, sans-serif; background: #000; color: #fff; }
+    .label { color: #00E676; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+    .card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 16px; }
+    .faq-q { cursor: pointer; }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height 0.25s ease; }
+    .faq-item.open .faq-a { max-height: 500px; }
+    .faq-icon { transition: transform 0.2s ease; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+  </style>
+</head>
+<body class="min-h-screen">
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-[#1a1a1a]">
+    <div class="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="./investor.html" class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg overflow-hidden border border-[#1a1a1a] bg-[#0a0a0a]">
+          <img src="./assets/logo.jpg" alt="MoneyBot" class="w-full h-full object-cover" />
+        </div>
+        <div class="text-sm font-bold">MoneyBot</div>
+      </a>
+      <a href="./investor.html" class="text-sm font-semibold text-[#00E676]">← Back to data room</a>
+    </div>
+  </nav>
+
+  <main class="pt-32 pb-20 px-6">
+    <div class="max-w-3xl mx-auto">
+      <div class="label mb-4">Investor FAQ</div>
+      <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-6">What investors ask us.</h1>
+      <p class="text-neutral-400 text-lg mb-12">If your question isn't here, email <a href="mailto:kahlil@getmoneybot.com" class="text-[#00E676] hover:underline">kahlil@getmoneybot.com</a>.</p>
+
+      <div class="space-y-4">
+        <div class="card faq-item open">
+          <div class="faq-q p-6 flex items-center justify-between" onclick="toggleFaq(this)">
+            <h3 class="font-bold pr-4">What makes MoneyBot different from Khan Academy, Greenlight, or YouTube?</h3>
+            <span class="faq-icon text-[#00E676] text-2xl font-light flex-shrink-0">+</span>
+          </div>
+          <div class="faq-a px-6 pb-6"><p class="text-neutral-400 text-sm">We're AI-native and conversation-first. Kids learn by asking questions and doing quests, not watching pre-recorded videos. We also connect parents to the learning loop and are COPPA-compliant from day one.</p></div>
+        </div>
+
+        <div class="card faq-item">
+          <div class="faq-q p-6 flex items-center justify-between" onclick="toggleFaq(this)">
+            <h3 class="font-bold pr-4">How do you acquire customers?</h3>
+            <span class="faq-icon text-[#00E676] text-2xl font-light flex-shrink-0">+</span>
+          </div>
+          <div class="faq-a px-6 pb-6"><p class="text-neutral-400 text-sm">Free school pilots create teacher champions. Students use MoneyBot in class, then bring it home. Parents convert to paid subscriptions. This keeps CAC low and creates a natural expansion path from classroom to district.</p></div>
+        </div>
+
+        <div class="card faq-item">
+          <div class="faq-q p-6 flex items-center justify-between" onclick="toggleFaq(this)">
+            <h3 class="font-bold pr-4">What is the path to revenue?</h3>
+            <span class="faq-icon text-[#00E676] text-2xl font-light flex-shrink-0">+</span>
+          </div>
+          <div class="faq-a px-6 pb-6"><p class="text-neutral-400 text-sm">B2C subscriptions launch first ($9.99/mo or $79/yr). School district licenses and employer-sponsored family benefits follow once we have measurable usage and outcomes.</p></div>
+        </div>
+
+        <div class="card faq-item">
+          <div class="faq-q p-6 flex items-center justify-between" onclick="toggleFaq(this)">
+            <h3 class="font-bold pr-4">How do you keep kids safe?</h3>
+            <span class="faq-icon text-[#00E676] text-2xl font-light flex-shrink-0">+</span>
+          </div>
+          <div class="faq-a px-6 pb-6"><p class="text-neutral-400 text-sm">COPPA-compliant from day one. No ads, no data selling, age-gated conversations, and parent-managed accounts. All AI responses are filtered for age-appropriate content.</p></div>
+        </div>
+
+        <div class="card faq-item">
+          <div class="faq-q p-6 flex items-center justify-between" onclick="toggleFaq(this)">
+            <h3 class="font-bold pr-4">What does the $500K get you?</h3>
+            <span class="faq-icon text-[#00E676] text-2xl font-light flex-shrink-0">+</span>
+          </div>
+          <div class="faq-a px-6 pb-6"><p class="text-neutral-400 text-sm">18–24 months of runway to reach [FILL: target metric], validate unit economics, and raise a Seed round. Allocation: 45% product/engineering, 30% growth/partnerships, 15% operations, 10% reserve.</p></div>
+        </div>
+
+        <div class="card faq-item">
+          <div class="faq-q p-6 flex items-center justify-between" onclick="toggleFaq(this)">
+            <h3 class="font-bold pr-4">Who else is in the round?</h3>
+            <span class="faq-icon text-[#00E676] text-2xl font-light flex-shrink-0">+</span>
+          </div>
+          <div class="faq-a px-6 pb-6"><p class="text-neutral-400 text-sm">$90K committed from angels and family offices. [FILL: names with permission, or keep general.]</p></div>
+        </div>
+
+        <div class="card faq-item">
+          <div class="faq-q p-6 flex items-center justify-between" onclick="toggleFaq(this)">
+            <h3 class="font-bold pr-4">What are your unit economics?</h3>
+            <span class="faq-icon text-[#00E676] text-2xl font-light flex-shrink-0">+</span>
+          </div>
+          <div class="faq-a px-6 pb-6"><p class="text-neutral-400 text-sm">Estimated CAC $[FILL], LTV $[FILL], LTV/CAC [FILL]x, payback <30 days. These are early assumptions — confirm with cfo-bot and update before sharing with institutional investors.</p></div>
+        </div>
+
+        <div class="card faq-item">
+          <div class="faq-q p-6 flex items-center justify-between" onclick="toggleFaq(this)">
+            <h3 class="font-bold pr-4">What is your tech stack?</h3>
+            <span class="faq-icon text-[#00E676] text-2xl font-light flex-shrink-0">+</span>
+          </div>
+          <div class="faq-a px-6 pb-6"><p class="text-neutral-400 text-sm">[FILL: e.g., React/TypeScript frontend, Node.js backend, OpenAI API for conversational AI, PostgreSQL for user data, deployed on Vercel/AWS.]</p></div>
+        </div>
+
+        <div class="card faq-item">
+          <div class="faq-q p-6 flex items-center justify-between" onclick="toggleFaq(this)">
+            <h3 class="font-bold pr-4">What are the biggest risks?</h3>
+            <span class="faq-icon text-[#00E676] text-2xl font-light flex-shrink-0">+</span>
+          </div>
+          <div class="faq-a px-6 pb-6"><p class="text-neutral-400 text-sm">[FILL: e.g., pilot-to-paid conversion, AI content moderation at scale, dependency on school district sales cycles, competition from well-funded edtech incumbents. Be honest.]</p></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function toggleFaq(el) {
+      const item = el.closest('.faq-item');
+      item.classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
